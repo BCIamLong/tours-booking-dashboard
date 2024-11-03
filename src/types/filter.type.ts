@@ -11,3 +11,5 @@ export type SortOptions =
   | "trending";
 
 export type SortReviewOption = "latest" | "oldest";
+
+export type FilterOptions = "none" | "group" | "private" | "personal";

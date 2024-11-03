@@ -13,6 +13,7 @@ import Modal from "~/components/Modal";
 import { ConfirmDelete } from "~/components/ConfirmDelete";
 import Table from "~/components/Table";
 import Menus from "~/components/Menus";
+import { Tour } from "~/types";
 
 const Image = styled.img`
   width: 70%;
@@ -60,65 +61,66 @@ const StyledHiEllipsisVertical = styled(HiEllipsisVertical)`
 
 // const Options = styled.button``;
 
-interface CabinItemProps {
-  cabin: Cabin;
+interface TourItemProps {
+  tour: Tour;
 }
 
-function CabinItem({ cabin }: CabinItemProps) {
+function TourItem({ tour }: TourItemProps) {
   // const { handlers } = useToaster();
   // const { startPause, endPause } = handlers;
   // const [isConfirm, setIsConfirm] = useState(false);
   const { isDeleting, deleteCabinMutate } = useDeleteCabin();
   const { isCreating, createCabinMutate } = useCreateCabin();
 
-  const { name, maxCapacity, regularPrice, discount, description, image } = cabin;
+  const { name, maxGroupSize, price, type, description, imageCover, _id: tourId } = tour;
 
   function handleDuplicateCabin() {
-    const newCabinData = {
-      name: `Copy of ${name}`,
-      maxCapacity,
-      regularPrice,
-      discount,
-      description,
-      image,
-    };
-    createCabinMutate(newCabinData, {
-      onSuccess: () => {
-        toast.success("Duplicate cabin successful");
-      },
-    });
+    // const newCabinData = {
+    //   name: `Copy of ${name}`,
+    //   maxCapacity,
+    //   regularPrice,
+    //   discount,
+    //   description,
+    //   image,
+    // };
+    // createCabinMutate(newCabinData, {
+    //   onSuccess: () => {
+    //     toast.success("Duplicate cabin successful");
+    //   },
+    // });
   }
   return (
     <>
       <Table.Row>
         <div>
-          <Image src={cabin.image} alt={`The Wild Oasis's Cabin ${cabin.name}`} />
+          <Image src={imageCover} alt={`The Wild Oasis's Cabin ${name}`} />
         </div>
         <div>
-          <Name>{cabin.name}</Name>
+          <Name>{name}</Name>
         </div>
         <div>
-          <p>Fits up {cabin.maxCapacity} guests</p>
+          <p>Fits up {maxGroupSize} guests</p>
         </div>
         <div>
-          <RegularPrice>{formatCurrency(cabin.regularPrice)}</RegularPrice>
+          <RegularPrice>{formatCurrency(price)}</RegularPrice>
         </div>
         <div>
-          {cabin.discount ? (
+          {type}
+          {/* {cabin.discount ? (
             <Discount $isExist={true}>{formatCurrency(cabin.discount)}</Discount>
           ) : (
             <Discount $isExist={false}>&mdash;</Discount>
-          )}
+          )} */}
         </div>
         <Menus.Menu>
-          <Menus.Toggle id={cabin.id}>
+          <Menus.Toggle id={Date.now()}>
             <Button $size="tiny" $variation="option">
               <StyledHiEllipsisVertical />
             </Button>
           </Menus.Toggle>
 
           <Modal>
-            <Menus.Box id={cabin.id}>
+            <Menus.Box id={Date.now()}>
               <Menus.Button disabled={isCreating} onClick={handleDuplicateCabin}>
                 <HiMiniSquare2Stack />
                 <span>{isCreating ? "Duplicating" : "Duplicate"}</span>
@@ -147,7 +149,7 @@ function CabinItem({ cabin }: CabinItemProps) {
               </Modal.Open>
             </Menus.Box>
 
-            <Modal.Window name="edit-form">
+            {/* <Modal.Window name="edit-form">
               <CabinForm cabinToEdit={cabin} />
             </Modal.Window>
 
@@ -159,7 +161,7 @@ function CabinItem({ cabin }: CabinItemProps) {
                 }}
                 disabled={isDeleting}
               />
-            </Modal.Window>
+            </Modal.Window> */}
           </Modal>
         </Menus.Menu>
         {/* {showForm && (
@@ -177,4 +179,4 @@ function CabinItem({ cabin }: CabinItemProps) {
   );
 }
 
-export default CabinItem;
+export default TourItem;

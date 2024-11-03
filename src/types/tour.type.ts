@@ -1,3 +1,23 @@
+import { FieldValues } from "react-hook-form";
+
+export interface TourInput extends FieldValues {
+  name: string;
+  duration: number;
+  maxGroupSize: number;
+  difficulty: string;
+  type: string;
+  summary: string;
+  description: string;
+  price: number;
+  imageCover: FileList | string;
+  image1: FileList | string;
+  image2: FileList | string;
+  image3: FileList | string;
+  startDates: StartDate[];
+  startLocation: StartLocation;
+  locations: Location[];
+}
+
 export interface SearchTour {
   name?: string;
   duration?: number;
@@ -48,8 +68,8 @@ export interface Tour {
   images: string[];
   createdAt: Date;
   updatedAt: Date;
-  startDates: StartDate[];
   vip: boolean;
+  startDates: StartDate[];
   startLocation: StartLocation;
   locations: Location[];
 }

@@ -1,12 +1,13 @@
 import axios from "axios";
 import { appConfig } from "~/configs";
-import { SearchTour, SortOptions } from "~/types";
+import { FilterOptions, SearchTour, SortOptions } from "~/types";
 
 axios.defaults.withCredentials = true;
 const { SERVER_BASE_URL, PAGE_LIMIT } = appConfig;
 
 const getTours = async function ({
   sort = "none",
+  filter = "none",
   page = 1,
   limit = PAGE_LIMIT,
   search,
@@ -16,6 +17,7 @@ const getTours = async function ({
   difficulty = "none",
 }: {
   sort?: SortOptions;
+  filter?: FilterOptions;
   page?: number;
   limit?: number;
   search?: SearchTour | URLSearchParams;
@@ -26,6 +28,7 @@ const getTours = async function ({
 }) {
   try {
     let sortStr = "";
+    let filterStr = "";
     const typeStr = type === "none" ? "" : `&type=${type}`;
     if (type && (search as SearchTour)?.type) delete (search as SearchTour)["type"];
 
@@ -41,6 +44,10 @@ const getTours = async function ({
     if (sort === "name-low") sortStr = "sort=name";
     // if (sort === 'none') sortStr = ''
 
+    if (filter === "group") filterStr = "&type=group";
+    if (filter === "private") filterStr = "&type=private";
+    if (filter === "personal") filterStr = "&type=personal";
+
     if (status === "popular") statusStr = "&sort=-ratingsQuantity";
     if (status === "trending") statusStr = "&sort=-ratingsQuantity&sort=-ratingsAverage";
     if (status === "most-discount") statusStr = "&sort=-ratingsQuantity";
@@ -49,9 +56,9 @@ const getTours = async function ({
     const searchOptions = new URLSearchParams((search as URLSearchParams) || {}).toString();
     console.log(searchOptions);
 
-    let url = `${SERVER_BASE_URL}/api/v1/tours?${sortStr}${typeStr}${difficultyStr}${statusStr}${dateStr}&limit=${limit}&page=${page}`;
+    let url = `${SERVER_BASE_URL}/api/v1/tours?${sortStr}${filterStr}${typeStr}${difficultyStr}${statusStr}${dateStr}&limit=${limit}&page=${page}`;
     if (searchOptions)
-      url = `${SERVER_BASE_URL}/api/v1/tours?${sortStr}${typeStr}${difficultyStr}${statusStr}${dateStr}&limit=${limit}&page=${page}&${searchOptions}`;
+      url = `${SERVER_BASE_URL}/api/v1/tours?${sortStr}${filterStr}${typeStr}${difficultyStr}${statusStr}${dateStr}&limit=${limit}&page=${page}&${searchOptions}`;
     url = url.replace("?&", "?");
     console.log(statusStr);
     console.log(url);

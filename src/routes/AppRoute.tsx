@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import ProtectedRoute from "./ProtectedRoute";
 import SpinnerScreen from "~/components/SpinnerScreen";
+import Tours from "~/pages/Tours";
 // import SpinnerScreen from "~/components/SpinnerScreen";
 
 // import Bookings from "../pages/Bookings";
@@ -71,6 +72,7 @@ export default function AppRoute() {
             <Route path="bookings/:bookingId" element={<Booking />} />
             <Route path="check-in/:bookingId" element={<CheckIn />} />
             <Route path="cabins" element={<Cabins />} />
+            <Route path="tours" element={<Tours />} />
             <Route path="settings" element={<Settings />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />
