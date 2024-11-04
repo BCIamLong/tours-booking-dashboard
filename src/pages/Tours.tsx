@@ -1,7 +1,7 @@
 import ToursTable from "~/features/tours/ToursTable";
 import Row from "../components/Row";
-import { AddCabin } from "~/features/cabins/AddCabin";
 import ToursOperations from "~/features/tours/ToursOperations";
+import { AddTour } from "~/features/tours/AddTour";
 // import CreateCabinForm from "../features/cabins/CreateCabinForm";
 
 function Tours() {
@@ -14,7 +14,7 @@ function Tours() {
       </Row>
       <Row>
         <ToursTable />
-        <AddCabin />
+        <AddTour />
       </Row>
     </>
   );

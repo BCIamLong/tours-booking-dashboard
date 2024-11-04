@@ -8,8 +8,15 @@ import { FileInput, Form, FormRow, Input } from "~/components/form";
 import Cabin from "~/types/cabin.type";
 import toast from "react-hot-toast";
 import Textarea from "~/components/form/Textarea";
+import { TourInput } from "~/types";
 // import { useModalContext } from "~/components/Modal";
 // import Cabin from "../../types/cabin.type";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { getDataGeolocation } from "~/services/apiGeoService";
 
 const Buttons = styled.div`
   display: flex;
@@ -18,6 +25,35 @@ const Buttons = styled.div`
   margin-right: 0;
   padding-top: 2rem;
 `;
+
+const DateField = styled.div`
+display: flex;
+flex-direction: column;
+gap: 1.2rem;
+`;
+
+const DateBox = styled.div`
+display: flex;
+gap: 1.2rem;
+`;
+
+const LocationBox = styled.div`
+display: flex;
+flex-direction: column;
+gap: 1.2rem;
+`;
+
+const LocationSearchBox = styled.div`
+display: flex;
+gap: 1.2rem;
+`;
+
+const LocationField = styled.div`
+display: flex;
+flex-direction: column;
+gap: 1.2rem;
+`;
+
 
 // const Textarea = styled.textarea`
 //   padding: 1.6rem 1.2rem;
@@ -49,10 +85,14 @@ interface CabinFormProps {
 }
 
 // function CabinForm({ cabinToEdit }: CabinFormProps) {
-function CabinForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
+function TourForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
+  const [startDate, setStartDate] = useState(new Date());
+  const [startLocation, setStartLocation] = useState('');
+  const [startLocationStr, setStartLocationStr] = useState('');
+  const [startDates, setStartDates] = useState<Date[]>([]);
   // const { open: setShowForm } = useModalContext()!;
   const { id: editId, ...editData } = cabinToEdit || {};
-  const { register, handleSubmit, formState, getValues, reset } = useForm<Inputs>({
+  const { register, handleSubmit, formState, getValues, reset } = useForm<TourInput>({
     defaultValues: editId ? (editData as FieldValues) : {},
   });
 
@@ -62,36 +102,57 @@ function CabinForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
   const { isEditing, editCabinMutate } = useEditCabin();
 
   const isWorking = isCreating || isEditing;
+  const handleClickAddDate = function () {
+    if (!startDate) return
 
-  const onSubmit: SubmitHandler<Inputs> = function (data) {
+    const newStartDates = [...startDates, startDate]
+
+    setStartDates(newStartDates)
+    setStartDate(new Date())
+  }
+
+  const handleAddLocation = async function () {
+    if (!startLocation.length) return
+    console.log(startLocation)
+    const coordinates = startLocation.split(',')
+
+    const data = await getDataGeolocation(coordinates[0], coordinates[1])
+    console.log(data)
+    const locationStr = `${data.locality}, ${data.name}, ${data.country}`
+
+    setStartLocationStr(locationStr)
+    setStartLocation('')
+  }
+
+  const onSubmit: SubmitHandler<TourInput> = function (data) {
     // console.log(data);
     // mutate({ ...data, image: data.image[0] });
     // if (editId) return console.log(data);
-    if (editId)
-      return editCabinMutate(
-        { id: editId, newCabinData: data },
-        {
-          onSuccess: (data: Cabin) => {
-            // * notice that in the onSuccess we can access to the newly data so it can be the new edited data in this case
-            console.log(data);
-            setTimeout(() => {
-              setShowForm?.(false);
-            }, 1000);
-          },
-        }
-      );
+    // if (editId)
+    //   return editCabinMutate(
+    //     { id: editId, newCabinData: data },
+    //     {
+    //       onSuccess: (data: Cabin) => {
+    //         // * notice that in the onSuccess we can access to the newly data so it can be the new edited data in this case
+    //         console.log(data);
+    //         setTimeout(() => {
+    //           setShowForm?.(false);
+    //         }, 1000);
+    //       },
+    //     }
+    //   );
 
-    createCabinMutate(data, {
-      onSuccess: (data: Cabin) => {
-        // * notice that in the onSuccess we can access to the newly data so it can be the new created data in this case
-        console.log(data);
-        toast.success("Create new cabin successful");
-        reset();
-        setTimeout(() => {
-          setShowForm?.(false);
-        }, 1000);
-      },
-    });
+    // createCabinMutate(data, {
+    //   onSuccess: (data: Cabin) => {
+    //     // * notice that in the onSuccess we can access to the newly data so it can be the new created data in this case
+    //     console.log(data);
+    //     toast.success("Create new cabin successful");
+    //     reset();
+    //     setTimeout(() => {
+    //       setShowForm?.(false);
+    //     }, 1000);
+    //   },
+    // });
   };
 
   const onError = function (errors: FieldErrors) {
@@ -120,35 +181,66 @@ function CabinForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
         />
       </FormRow>
 
-      <FormRow label="maxCapacity" errorMsg={errors.maxCapacity?.message || ""}>
+      <FormRow label="type" errorMsg={errors.type?.message || ""}>
         <Input
-          type="number"
-          id="maxCapacity"
-          {...register("maxCapacity", { required: "This field is required" })}
+          type="text"
+          id="type"
+          {...register("type", { required: "This field is required" })}
           disabled={isWorking}
         />
       </FormRow>
 
-      <FormRow label="regularPrice" errorMsg={errors.regularPrice?.message || ""}>
+      <FormRow label="difficulty" errorMsg={errors.difficulty?.message || ""}>
         <Input
-          type="number"
-          id="regularPrice"
-          {...register("regularPrice", { required: "This field is required" })}
+          type="text"
+          id="difficulty"
+          {...register("difficulty", { required: "This field is required" })}
           disabled={isWorking}
         />
       </FormRow>
 
-      <FormRow label="discount" errorMsg={errors.discount?.message || ""}>
+      <FormRow label="Max Group Size" errorMsg={errors.maxGroupSize?.message || ""}>
         <Input
           type="number"
-          id="discount"
-          {...register("discount", {
+          id="maxGroupSize"
+          {...register("maxGroupSize", { required: "This field is required" })}
+          disabled={isWorking}
+        />
+      </FormRow>
+
+      <FormRow label="price" errorMsg={errors.price?.message || ""}>
+        <Input
+          type="number"
+          id="price"
+          {...register("price", { required: "This field is required" })}
+          disabled={isWorking}
+        />
+      </FormRow>
+
+      <FormRow label="duration" errorMsg={errors.duration?.message || ""}>
+        <Input
+          type="number"
+          id="duration"
+          {...register("duration", {
             required: "This field is required",
-            validate: (val: number) => val <= +getValues().regularPrice || "Discount must less than price",
+            validate: (val: number) => val <= +getValues().regularPrice || "Duration must less than price",
           })}
           disabled={isWorking}
           defaultValue={0}
         />
+      </FormRow>
+
+      <FormRow label="summary" errorMsg={errors.summary?.message || ""}>
+        <Textarea
+          id="summary"
+          {...register("summary", {
+            required: "This field is required",
+            validate: (text: string) => {
+              return text.split(" ").length > 2 || "This string must be more 3 words";
+            },
+          })}
+          disabled={isWorking}
+        ></Textarea>
       </FormRow>
 
       <FormRow label="description" errorMsg={errors.description?.message || ""}>
@@ -164,7 +256,7 @@ function CabinForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
         ></Textarea>
       </FormRow>
 
-      <FormRow label="image" errorMsg={errors.image?.message || ""}>
+      <FormRow label="Image Cover" errorMsg={errors.imageCover?.message || ""}>
         {/* <Input
           type="text"
           id="image"
@@ -172,10 +264,95 @@ function CabinForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
           disabled={isCreating}
         /> */}
         <FileInput
-          id="image"
-          {...register("image", { required: editId ? false : "This field is required" })}
+          id="imageCover"
+          {...register("imageCover", { required: editId ? false : "This field is required" })}
           disabled={isWorking}
         />
+      </FormRow>
+      <FormRow label="image 1" errorMsg={errors.image1?.message || ""}>
+        <FileInput
+          id="image1"
+          {...register("image1", { required: editId ? false : "This field is required" })}
+          disabled={isWorking}
+        />
+      </FormRow>
+      <FormRow label="image 2" errorMsg={errors.image2?.message || ""}>
+        <FileInput
+          id="image2"
+          {...register("image2", { required: editId ? false : "This field is required" })}
+          disabled={isWorking}
+        />
+      </FormRow>
+      <FormRow label="image 3" errorMsg={errors.image3?.message || ""}>
+        <FileInput
+          id="image3"
+          {...register("image3", { required: editId ? false : "This field is required" })}
+          disabled={isWorking}
+        />
+      </FormRow>
+
+      <FormRow label="start dates" errorMsg={errors.startDates?.message || ""}>
+        <DateField>
+          <DateBox>
+            <DatePicker selected={startDate} onChange={(date) => setStartDate(new Date(date!))} />
+            <Button type="button" $size="medium" $variation={'secondary'} onClick={handleClickAddDate}>Add date</Button>
+          </DateBox>
+          {startDates?.map((date: Date, ind) => <p>
+            <span>Start Date {ind + 1}: </span>
+            <span>{date.toLocaleDateString('en-US', { month: 'long', year: 'numeric', day: '2-digit' })}</span>
+          </p>
+          )}
+          {/* <Input
+            type="text"
+            id="difficulty"
+            {...register("difficulty", { required: "This field is required" })}
+            disabled={isWorking}
+          /> */}
+        </DateField>
+      </FormRow>
+
+      <FormRow label="start location" errorMsg={errors.startDates?.message || ""}>
+        <LocationField>
+          <LocationBox>
+            <Link target="_blank" to={'https://www.google.com/maps'}>Go to google map and search for the needed location and copy the location and paste here</Link>
+            <LocationSearchBox>
+              <Input
+                type="text"
+                id="start-location"
+                value={startLocation}
+                onChange={(e) => setStartLocation(e.target.value)}
+                disabled={isWorking}
+              />
+              <Button type="button" $size="medium" onClick={handleAddLocation}>Add location</Button>
+            </LocationSearchBox>
+            <>
+              {startLocationStr && <p>{startLocationStr}</p>}</>
+          </LocationBox>
+          <>
+          </>
+        </LocationField>
+      </FormRow>
+
+      <FormRow label="locations" errorMsg={errors.startDates?.message || ""}>
+        <LocationField>
+          <LocationBox>
+            <Link target="_blank" to={'https://www.google.com/maps'}>Go to google map and search for the needed location and copy the location and paste here</Link>
+            <LocationSearchBox>
+              <Input
+                type="text"
+                id="start-location"
+                value={startLocation}
+                onChange={(e) => setStartLocation(e.target.value)}
+                disabled={isWorking}
+              />
+              <Button type="button" $size="medium" onClick={handleAddLocation}>Add location</Button>
+            </LocationSearchBox>
+            <>
+              {startLocationStr && <p>{startLocationStr}</p>}</>
+          </LocationBox>
+          <>
+          </>
+        </LocationField>
       </FormRow>
 
       <Buttons>
@@ -188,4 +365,4 @@ function CabinForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
   );
 }
 
-export default CabinForm;
+export default TourForm;

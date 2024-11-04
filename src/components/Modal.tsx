@@ -36,6 +36,9 @@ const PopupBox = styled.div`
   z-index: 300;
   position: relative;
   box-shadow: var(--shadow-lg);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 90vh;
 `;
 
 const CloseBox = styled.div`
