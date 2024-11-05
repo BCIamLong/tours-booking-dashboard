@@ -8,7 +8,7 @@ import { FileInput, Form, FormRow, Input } from "~/components/form";
 import Cabin from "~/types/cabin.type";
 import toast from "react-hot-toast";
 import Textarea from "~/components/form/Textarea";
-import { TourInput } from "~/types";
+import { Location, StartLocation, TourInput } from "~/types";
 // import { useModalContext } from "~/components/Modal";
 // import Cabin from "../../types/cabin.type";
 import DatePicker from "react-datepicker";
@@ -17,6 +17,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getDataGeolocation } from "~/services/apiGeoService";
+import { HiXMark } from "react-icons/hi2";
 
 const Buttons = styled.div`
   display: flex;
@@ -35,12 +36,66 @@ gap: 1.2rem;
 const DateBox = styled.div`
 display: flex;
 gap: 1.2rem;
+& input{
+  border: solid #1414c8;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  outline: none;
+  width: 24rem;
+}
+& .react-datepicker-popper{
+  /* width: 20%; */
+}
+& .react-datepicker{
+  /* width: 100%; */
+}
+& .react-datepicker__navigation--previous {
+  /* width: 100%; */
+ left: 0;
+ /* padding: 2rem; */
+ display: flex;
+ width: 14%;
+ height: 2.4rem;
+ /* background-color: #1414c8; */
+ justify-content: left;
+ padding-left: 0.8rem;
+ outline: none;
+}
+& .react-datepicker__navigation--next {
+  /* width: 100%; */
+ right: 0;
+ /* padding: 2rem; */
+ display: flex;
+ width: 14%;
+ height: 2.4rem;
+ /* background-color: #1414c8; */
+ justify-content: left;
+ padding-left: 0.8rem;
+ outline: none;
+}
+& .react-datepicker__header__dropdown{
+  /* width: 100%; */
+  
+}
+& .react-datepicker__header {
+  /* width: 100%; */
+  /* height: ; */
+  /* display: flex;
+  flex-direction: column;
+  gap: 1rem; */
+}
+& button{
+  width: 10rem;
+}
 `;
 
 const LocationBox = styled.div`
 display: flex;
 flex-direction: column;
 gap: 1.2rem;
+ & a{
+  color: #1414c8; 
+ }
 `;
 
 const LocationSearchBox = styled.div`
@@ -48,11 +103,26 @@ display: flex;
 gap: 1.2rem;
 `;
 
+const LocationsList = styled.div`
+display: flex;
+gap: 0.6rem;
+justify-content: space-between;
+margin-top: 0.6rem;
+`;
+
+const StartDateList = styled.div`
+display: flex;
+gap: 0.6rem;
+justify-content: space-between;
+margin-top: 0.6rem;
+`;
+
 const LocationField = styled.div`
 display: flex;
 flex-direction: column;
 gap: 1.2rem;
 `;
+
 
 
 // const Textarea = styled.textarea`
@@ -88,7 +158,11 @@ interface CabinFormProps {
 function TourForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
   const [startDate, setStartDate] = useState(new Date());
   const [startLocation, setStartLocation] = useState('');
-  const [startLocationStr, setStartLocationStr] = useState('');
+  const [startLocationOb, setStartLocationOb] = useState<StartLocation>();
+
+  const [location, setLocation] = useState('');
+  const [locationsArr, setLocationsArr] = useState<Location[]>([]);
+
   const [startDates, setStartDates] = useState<Date[]>([]);
   // const { open: setShowForm } = useModalContext()!;
   const { id: editId, ...editData } = cabinToEdit || {};
@@ -111,17 +185,53 @@ function TourForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
     setStartDate(new Date())
   }
 
-  const handleAddLocation = async function () {
+  const handleAddStartLocation = async function () {
     if (!startLocation.length) return
-    console.log(startLocation)
+    // console.log(startLocation)
     const coordinates = startLocation.split(',')
 
     const data = await getDataGeolocation(coordinates[0], coordinates[1])
     console.log(data)
     const locationStr = `${data.locality}, ${data.name}, ${data.country}`
 
-    setStartLocationStr(locationStr)
+    setStartLocationOb({
+      address: locationStr,
+      coordinates,
+      description: `${data.name}, ${data.country}`,
+    })
     setStartLocation('')
+  }
+
+  const handleAddLocation = async function () {
+    if (!location.length) return
+    // console.log(startLocation)
+    const coordinates = location.split(',')
+
+    const data = await getDataGeolocation(coordinates[0], coordinates[1])
+    console.log(data)
+    const locationStr = `${data.locality}, ${data.name}, ${data.country}`
+
+    setLocationsArr((arr: Location[]) => [...arr, {
+      day: arr.length + 1,
+      address: locationStr,
+      coordinates,
+      description: `${data.name}, ${data.country}`,
+    }])
+    setLocation('')
+  }
+
+  const handleDeleteLocation = function (day: number) {
+
+    const newLocations = locationsArr.filter(loc => loc.day !== +day)
+
+    setLocationsArr(newLocations)
+  }
+
+  const handleDeleteStartDate = function (index: number) {
+
+    const mewStartDates = startDates.filter((_, ind) => ind !== index)
+
+    setStartDates(mewStartDates)
   }
 
   const onSubmit: SubmitHandler<TourInput> = function (data) {
@@ -291,16 +401,19 @@ function TourForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
         />
       </FormRow>
 
-      <FormRow label="start dates" errorMsg={errors.startDates?.message || ""}>
+      <FormRow label="start dates" widthOfItem="54rem" errorMsg={errors.startDates?.message || ""}>
         <DateField>
           <DateBox>
             <DatePicker selected={startDate} onChange={(date) => setStartDate(new Date(date!))} />
-            <Button type="button" $size="medium" $variation={'secondary'} onClick={handleClickAddDate}>Add date</Button>
+            <Button type="button" $size="small" onClick={handleClickAddDate}>Add date</Button>
           </DateBox>
-          {startDates?.map((date: Date, ind) => <p>
-            <span>Start Date {ind + 1}: </span>
-            <span>{date.toLocaleDateString('en-US', { month: 'long', year: 'numeric', day: '2-digit' })}</span>
-          </p>
+          {startDates?.map((date: Date, ind) => <StartDateList>
+            <p>
+              <span>Start Date {ind + 1}: </span>
+              <span>{date.toLocaleDateString('en-US', { month: 'long', year: 'numeric', day: '2-digit' })}</span>
+            </p>
+            <Button $size={'small'} onClick={() => handleDeleteStartDate(ind)}><HiXMark /></Button>
+          </StartDateList>
           )}
           {/* <Input
             type="text"
@@ -311,7 +424,7 @@ function TourForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
         </DateField>
       </FormRow>
 
-      <FormRow label="start location" errorMsg={errors.startDates?.message || ""}>
+      <FormRow label="start location" widthOfItem="63rem" errorMsg={errors.startDates?.message || ""}>
         <LocationField>
           <LocationBox>
             <Link target="_blank" to={'https://www.google.com/maps'}>Go to google map and search for the needed location and copy the location and paste here</Link>
@@ -323,17 +436,17 @@ function TourForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
                 onChange={(e) => setStartLocation(e.target.value)}
                 disabled={isWorking}
               />
-              <Button type="button" $size="medium" onClick={handleAddLocation}>Add location</Button>
+              <Button type="button" $size="small" onClick={handleAddStartLocation}>Add location</Button>
             </LocationSearchBox>
             <>
-              {startLocationStr && <p>{startLocationStr}</p>}</>
+              {startLocationOb?.address && <p>{startLocationOb.address}</p>}</>
           </LocationBox>
           <>
           </>
         </LocationField>
       </FormRow>
 
-      <FormRow label="locations" errorMsg={errors.startDates?.message || ""}>
+      <FormRow label="locations" widthOfItem="63rem" errorMsg={errors.startDates?.message || ""}>
         <LocationField>
           <LocationBox>
             <Link target="_blank" to={'https://www.google.com/maps'}>Go to google map and search for the needed location and copy the location and paste here</Link>
@@ -341,14 +454,17 @@ function TourForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
               <Input
                 type="text"
                 id="start-location"
-                value={startLocation}
-                onChange={(e) => setStartLocation(e.target.value)}
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
                 disabled={isWorking}
               />
-              <Button type="button" $size="medium" onClick={handleAddLocation}>Add location</Button>
+              <Button type="button" $size="small" onClick={handleAddLocation}>Add location</Button>
             </LocationSearchBox>
             <>
-              {startLocationStr && <p>{startLocationStr}</p>}</>
+              {locationsArr?.map((loc) => <LocationsList>
+                <p>Day {loc.day}: {loc.address}</p>
+                <Button $size={'small'} onClick={() => handleDeleteLocation(loc.day)}><HiXMark /></Button>
+              </LocationsList>)}</>
           </LocationBox>
           <>
           </>

@@ -40,14 +40,14 @@ interface StartDate {
   soldOut: boolean;
 }
 
-interface StartLocation {
-  type: string;
-  coordinates: number[];
+export interface StartLocation {
+  type?: string;
+  coordinates: number[] | string[];
   address: string;
   description: string;
 }
 
-interface Location extends StartLocation {
+export interface Location extends StartLocation {
   day: number;
 }
 
