@@ -34,10 +34,10 @@ export interface SearchTour {
   priceRange?: number;
 }
 
-interface StartDate {
+export interface StartDate {
   date: Date;
-  participants: number;
-  soldOut: boolean;
+  participants?: number;
+  soldOut?: boolean;
 }
 
 export interface StartLocation {

@@ -13,7 +13,10 @@ import Modal from "~/components/Modal";
 import { ConfirmDelete } from "~/components/ConfirmDelete";
 import Table from "~/components/Table";
 import Menus from "~/components/Menus";
-import { Tour } from "~/types";
+import { Location, StartDate, Tour } from "~/types";
+import useDeleteTour from "./useDeleteTour";
+import TourForm from "./TourForm";
+import useCreateTour from "./useCreateTour";
 
 const Image = styled.img`
   width: 70%;
@@ -69,10 +72,16 @@ function TourItem({ tour }: TourItemProps) {
   // const { handlers } = useToaster();
   // const { startPause, endPause } = handlers;
   // const [isConfirm, setIsConfirm] = useState(false);
-  const { isDeleting, deleteCabinMutate } = useDeleteCabin();
-  const { isCreating, createCabinMutate } = useCreateCabin();
+  const { isDeleting, deleteTourMutate } = useDeleteTour();
+  // const { isDeleting, deleteCabinMutate } = useDeleteCabin();
+  const { isCreating, createTourMutate } = useCreateTour();
+  // const { isCreating, createCabinMutate } = useCreateCabin();
 
-  const { name, maxGroupSize, price, type, description, imageCover, _id: tourId } = tour;
+  const { name,
+    maxGroupSize,
+    type,
+    price,
+    imageCover, _id: tourId } = tour;
 
   function handleDuplicateCabin() {
     // const newCabinData = {
@@ -88,6 +97,23 @@ function TourItem({ tour }: TourItemProps) {
     //     toast.success("Duplicate cabin successful");
     //   },
     // });
+    const formData = new FormData()
+    // console.log(Object.entries(tour))
+    Object.entries(tour).forEach(entry => {
+      if (entry[0] === 'ratingsAverage' || entry[0] === 'ratingsQuantity' || entry[0] === 'id' || entry[0] === '_id' || entry[0] === 'vip' || entry[0] === 'createdAt' || entry[0] === 'updatedAt') return
+      if (entry[0] === 'name') return formData.append(entry[0], 'Copy of ' + entry[1])
+      if (entry[0] === 'startLocation') return formData.append(entry[0], JSON.stringify(entry[1]))
+      if (entry[0] === 'startDates') return entry[1].forEach((date: StartDate) => formData.append(entry[0], JSON.stringify(date)))
+      if (entry[0] === 'locations') return entry[1].forEach((loc: Location) => formData.append(entry[0], JSON.stringify(loc)))
+      if (entry[0] === 'images') return entry[1].forEach((img: string) => formData.append(entry[0], img))
+
+      formData.append(entry[0], entry[1])
+    })
+    createTourMutate(formData, {
+      onSuccess: () => {
+        toast.success("Duplicate tour successful");
+      },
+    });
   }
   return (
     <>
@@ -149,19 +175,19 @@ function TourItem({ tour }: TourItemProps) {
               </Modal.Open>
             </Menus.Box>
 
-            {/* <Modal.Window name="edit-form">
-              <CabinForm cabinToEdit={cabin} />
+            <Modal.Window name="edit-form">
+              <TourForm tourToEdit={tour} />
             </Modal.Window>
 
             <Modal.Window name="confirm-box">
               <ConfirmDelete
                 recourseName="cabin"
                 onConfirm={() => {
-                  deleteCabinMutate(cabin.id);
+                  deleteTourMutate(tourId);
                 }}
                 disabled={isDeleting}
               />
-            </Modal.Window> */}
+            </Modal.Window>
           </Modal>
         </Menus.Menu>
         {/* {showForm && (

@@ -8,7 +8,7 @@ import { FileInput, Form, FormRow, Input } from "~/components/form";
 import Cabin from "~/types/cabin.type";
 import toast from "react-hot-toast";
 import Textarea from "~/components/form/Textarea";
-import { Location, StartLocation, TourInput } from "~/types";
+import { Location, StartDate, StartLocation, Tour, TourInput } from "~/types";
 // import { useModalContext } from "~/components/Modal";
 // import Cabin from "../../types/cabin.type";
 import DatePicker from "react-datepicker";
@@ -18,6 +18,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getDataGeolocation } from "~/services/apiGeoService";
 import { HiXMark } from "react-icons/hi2";
+import useCreateTour from "./useCreateTour";
+import useUpdateTour from "./useUpdateTour";
 
 const Buttons = styled.div`
   display: flex;
@@ -151,35 +153,40 @@ interface CabinFormProps {
   // * because now we can pass in this setShowForm via cloneElement in Modal.Window component so therefore this prop can be optional because we have case we don't need to pass in setShowForm prop tp CabinForm when we use it with Modal component right
 
   onCloseModal?: (show: boolean) => void;
-  cabinToEdit?: Cabin;
+  tourToEdit?: Tour;
 }
 
 // function CabinForm({ cabinToEdit }: CabinFormProps) {
-function TourForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
+function TourForm({ onCloseModal: setShowForm, tourToEdit }: CabinFormProps) {
   const [startDate, setStartDate] = useState(new Date());
   const [startLocation, setStartLocation] = useState('');
-  const [startLocationOb, setStartLocationOb] = useState<StartLocation>();
+
 
   const [location, setLocation] = useState('');
-  const [locationsArr, setLocationsArr] = useState<Location[]>([]);
 
-  const [startDates, setStartDates] = useState<Date[]>([]);
+
   // const { open: setShowForm } = useModalContext()!;
-  const { id: editId, ...editData } = cabinToEdit || {};
+  const { _id: editId, ...editData } = tourToEdit || {};
   const { register, handleSubmit, formState, getValues, reset } = useForm<TourInput>({
     defaultValues: editId ? (editData as FieldValues) : {},
   });
 
+  const { locations: locationsData, startDates: startDatesData, startLocation: startLocationData } = editData as TourInput || {}
+  const [startDates, setStartDates] = useState<StartDate[]>(startDatesData || []);
+  const [locationsArr, setLocationsArr] = useState<Location[]>(locationsData || []);
+  const [startLocationOb, setStartLocationOb] = useState<StartLocation>(startLocationData || {});
+
   const { errors } = formState;
 
-  const { isCreating, createCabinMutate } = useCreateCabin();
-  const { isEditing, editCabinMutate } = useEditCabin();
+  // const { isCreating, createCabinMutate } = useCreateCabin();
+  const { isCreating, createTourMutate } = useCreateTour();
+  const { isUpdating: isEditing, updateTourMutate } = useUpdateTour();
 
   const isWorking = isCreating || isEditing;
   const handleClickAddDate = function () {
     if (!startDate) return
 
-    const newStartDates = [...startDates, startDate]
+    const newStartDates = [...startDates, { date: startDate }]
 
     setStartDates(newStartDates)
     setStartDate(new Date())
@@ -235,34 +242,75 @@ function TourForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
   }
 
   const onSubmit: SubmitHandler<TourInput> = function (data) {
-    // console.log(data);
+    // const finalData = { ...data, startDates, startLocation: startLocationOb, locations: locationsArr }
+    // console.log(finalData)
+    const { name,
+      duration,
+      maxGroupSize,
+      difficulty,
+      type,
+      summary,
+      description,
+      price,
+      imageCover,
+      image1,
+      image2,
+      image3
+    } = data
+    // return console.log(getValues())
+    const formData = new FormData()
+    if (name) formData.append('name', name)
+    if (duration) formData.append('duration', String(duration))
+    if (maxGroupSize) formData.append('maxGroupSize', String(maxGroupSize))
+    if (difficulty) formData.append('difficulty', difficulty)
+    // console.log(type)
+    if (type) formData.append('type', type)
+    if (summary) formData.append('summary', summary)
+    if (description) formData.append('description', description)
+    if (price) formData.append('price', String(price))
+    if (startLocationOb?.address) formData.append('startLocation', JSON.stringify(startLocationOb))
+    if (startDates.length) startDates.forEach(date => formData.append('startDates', JSON.stringify(date)))
+    if (locationsArr.length) locationsArr.forEach(loc => formData.append('locations', JSON.stringify(loc)))
+    // console.log(imageCover)
+    if (imageCover[0] && imageCover[0] !== 'h') formData.append('imageCover', imageCover[0])
+    if (image1[0]) formData.append('images', image1[0])
+    if (image2[0]) formData.append('images', image2[0])
+    if (image3[0]) formData.append('images', image3[0])
+    // return console.log(formData)
+
     // mutate({ ...data, image: data.image[0] });
     // if (editId) return console.log(data);
-    // if (editId)
-    //   return editCabinMutate(
-    //     { id: editId, newCabinData: data },
-    //     {
-    //       onSuccess: (data: Cabin) => {
-    //         // * notice that in the onSuccess we can access to the newly data so it can be the new edited data in this case
-    //         console.log(data);
-    //         setTimeout(() => {
-    //           setShowForm?.(false);
-    //         }, 1000);
-    //       },
-    //     }
-    //   );
+    if (editId)
+      return updateTourMutate(
+        { id: editId!, newTourData: formData },
+        {
+          onSuccess: (data: Tour) => {
+            // * notice that in the onSuccess we can access to the newly data so it can be the new edited data in this case
+            console.log(data);
+            setTimeout(() => {
+              setShowForm?.(false);
+            }, 1000);
+          },
+        }
+      );
 
-    // createCabinMutate(data, {
-    //   onSuccess: (data: Cabin) => {
-    //     // * notice that in the onSuccess we can access to the newly data so it can be the new created data in this case
-    //     console.log(data);
-    //     toast.success("Create new cabin successful");
-    //     reset();
-    //     setTimeout(() => {
-    //       setShowForm?.(false);
-    //     }, 1000);
-    //   },
-    // });
+    createTourMutate(formData, {
+      onSuccess: (data: Tour) => {
+        // * notice that in the onSuccess we can access to the newly data so it can be the new created data in this case
+        console.log(data);
+        toast.success("Create new tour successful");
+        reset();
+        setStartDate(new Date())
+        setLocation('')
+        setStartLocationOb({} as StartLocation)
+        setStartDates([])
+        setLocationsArr([])
+
+        setTimeout(() => {
+          setShowForm?.(false);
+        }, 1000);
+      },
+    });
   };
 
   const onError = function (errors: FieldErrors) {
@@ -333,7 +381,7 @@ function TourForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
           id="duration"
           {...register("duration", {
             required: "This field is required",
-            validate: (val: number) => val <= +getValues().regularPrice || "Duration must less than price",
+            validate: (val: number) => val <= +getValues().price || "Duration must less than price",
           })}
           disabled={isWorking}
           defaultValue={0}
@@ -407,10 +455,10 @@ function TourForm({ onCloseModal: setShowForm, cabinToEdit }: CabinFormProps) {
             <DatePicker selected={startDate} onChange={(date) => setStartDate(new Date(date!))} />
             <Button type="button" $size="small" onClick={handleClickAddDate}>Add date</Button>
           </DateBox>
-          {startDates?.map((date: Date, ind) => <StartDateList>
+          {startDates?.map((date: StartDate, ind) => <StartDateList>
             <p>
               <span>Start Date {ind + 1}: </span>
-              <span>{date.toLocaleDateString('en-US', { month: 'long', year: 'numeric', day: '2-digit' })}</span>
+              <span>{new Date(date?.date)?.toLocaleDateString('en-US', { month: 'long', year: 'numeric', day: '2-digit' })}</span>
             </p>
             <Button $size={'small'} onClick={() => handleDeleteStartDate(ind)}><HiXMark /></Button>
           </StartDateList>

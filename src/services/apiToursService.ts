@@ -116,6 +116,7 @@ const createTour = async function ({ data }: { data: FormData }) {
 
 const updateTour = async function ({ id, data }: { id: string; data: FormData }) {
   try {
+    console.log("----------------------------", data.get("type"));
     const res = await axios.patch(`${SERVER_BASE_URL}/api/v1/tours/${id}`, data, {
       headers: {
         "Content-Type": "multipart/form-data",

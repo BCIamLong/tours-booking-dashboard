@@ -13,6 +13,7 @@ export default function ToursOperations() {
       <Filter
         filterField="filter"
         options={[
+          { value: "none", label: "All" },
           { value: "group", label: "Group" },
           { value: "private", label: "Private" },
           { value: "personal", label: "Personal" },
