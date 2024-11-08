@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Heading from "~/components/Heading";
-import LoginForm from "~/features/authentication/LoginForm";
+// import LoginForm from "~/features/authentication/LoginForm";
+import LoginForm from "~/features/auth/LoginForm";
 import Logo from "~/layouts/Logo";
 
 const LoginPage = styled.div`
@@ -50,6 +51,7 @@ function Login() {
     <LoginPage>
       <Logo />
       <Heading as="h4">Log in to your account</Heading>
+      {/* <LoginForm /> */}
       <LoginForm />
     </LoginPage>
   );

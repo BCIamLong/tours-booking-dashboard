@@ -1,8 +1,10 @@
 import { ReactNode, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast'
 import styled from "styled-components";
 import Spinner from "~/components/Spinner";
-import { useUser } from "~/features/authentication/useUser";
+import { useUser } from "~/features/auth/useUser";
+// import { useUser } from "~/features/authentication/useUser";
 
 const StyledProtectedRoute = styled.div`
   display: flex;
@@ -15,11 +17,17 @@ const StyledProtectedRoute = styled.div`
 export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const { isAuthenticated, isLoading } = useUser();
-
+  // console.log(user, isAuthenticated)
   useEffect(
     function () {
-      console.log(isAuthenticated, isLoading);
-      if (!isAuthenticated && !isLoading) navigate("/login");
+      // console.log(isAuthenticated, isLoading);
+      if (!isAuthenticated && !isLoading) {
+
+        navigate("/login");
+        toast.error(
+          "Please login to perform this action"
+        );
+      }
     },
     [isAuthenticated, isLoading, navigate]
   );
