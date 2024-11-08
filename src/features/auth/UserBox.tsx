@@ -19,8 +19,8 @@ const Avatar = styled.img`
 
 export default function UserBox() {
   const { user } = useUser();
-  // const { avatar, name: fullName } = user || {};
-  const { avatar, fullName } = user?.user_metadata || {};
+  const { avatar, name: fullName } = user || {};
+  // const { avatar, fullName } = user?.user_metadata || {};
   return (
     <StyledUserBox>
       <Avatar src={avatar || "default-user.jpg"} alt={`Avatar of ${fullName}`} />

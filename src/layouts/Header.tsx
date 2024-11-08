@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import UserBox from "~/features/authentication/UserBox";
+import UserBox from "~/features/auth/UserBox";
+// import UserBox from "~/features/authentication/UserBox";
 import HeaderMenu from "./HeaderMenu";
 
 const StyledHeader = styled.header`

@@ -1,6 +1,7 @@
 import Row from "~/components/Row";
 import UpdatePasswordForm from "~/features/authentication/UpdatePasswordForm";
-import UpdateProfileForm from "~/features/authentication/UpdateProfileForm";
+import UpdateProfileForm from "~/features/auth/UpdateProfileForm";
+// import UpdateProfileForm from "~/features/authentication/UpdateProfileForm";
 
 function Account() {
   return (
