@@ -1,7 +1,8 @@
 import Row from "~/components/Row";
 import SearchBox from "~/components/SearchBox";
 import AddBooking from "~/features/bookings/AddBooking";
-import BookingsTable from "~/features/bookings/BookingsTable";
+import BookingsTable from "~/features/booking/BookingsTable";
+// import BookingsTable from "~/features/bookings/BookingsTable";
 import BookingsTableOperations from "~/features/bookings/BookingsTableOperations";
 
 function Bookings() {
