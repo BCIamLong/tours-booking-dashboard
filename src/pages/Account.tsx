@@ -1,5 +1,6 @@
 import Row from "~/components/Row";
-import UpdatePasswordForm from "~/features/authentication/UpdatePasswordForm";
+import UpdatePasswordForm from "~/features/auth/UpdatePasswordForm";
+// import UpdatePasswordForm from "~/features/authentication/UpdatePasswordForm";
 import UpdateProfileForm from "~/features/auth/UpdateProfileForm";
 // import UpdateProfileForm from "~/features/authentication/UpdateProfileForm";
 
