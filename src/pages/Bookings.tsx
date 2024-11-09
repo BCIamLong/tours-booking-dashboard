@@ -3,17 +3,18 @@ import SearchBox from "~/components/SearchBox";
 import AddBooking from "~/features/bookings/AddBooking";
 import BookingsTable from "~/features/booking/BookingsTable";
 // import BookingsTable from "~/features/bookings/BookingsTable";
-import BookingsTableOperations from "~/features/bookings/BookingsTableOperations";
+import BookingsTableOperations from "~/features/booking/BookingsTableOperations";
+// import BookingsTableOperations from "~/features/bookings/BookingsTableOperations";
 
 function Bookings() {
   return (
     <>
       <Row $type="horizontal">
         <h2>Bookings</h2>
-        <AddBooking />
+        <SearchBox />
       </Row>
       <Row $type="horizontal">
-        <SearchBox />
+        <AddBooking />
         <BookingsTableOperations />
       </Row>
       <Row>

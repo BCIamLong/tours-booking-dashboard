@@ -6,18 +6,18 @@ import { Booking } from "~/types/booking.type";
 import Pagination from "~/components/Pagination";
 import Menus from "~/components/Menus";
 import Empty from "~/components/Empty";
-import { useSearchParams } from "react-router-dom";
 // import { useSearchBookings } from "./userSearchBookings";
-// import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import { FilterOptions, SortOptions } from "~/types";
 
 export default function BookingsTable() {
-  // const [searchParams] = useSearchParams();
-  // const filter = searchParams.get("filter") || "";
   const [searchParams] = useSearchParams();
+  const filter = searchParams.get("filter") || "none";
+  const sort = searchParams.get("sort") || "none";
   const query = searchParams.get("search") || "";
   // const { bookings: bookingsSearch, isSearching } = useSearchBookings(query);
 
-  const { isLoading, bookings, count } = useBookings({ sort: 'none', filter: 'none' });
+  const { isLoading, bookings, count } = useBookings({ sort: sort as SortOptions, filter: filter as FilterOptions });
 
   if (isLoading) return <Spinner />;
 
