@@ -8,7 +8,7 @@ import Menus from "~/components/Menus";
 import Empty from "~/components/Empty";
 // import { useSearchBookings } from "./userSearchBookings";
 import { useSearchParams } from "react-router-dom";
-import { FilterOptions, SortOptions } from "~/types";
+import { FilterBookingsOptions, SortOptions } from "~/types";
 
 export default function BookingsTable() {
   const [searchParams] = useSearchParams();
@@ -17,7 +17,7 @@ export default function BookingsTable() {
   const query = searchParams.get("search") || "";
   // const { bookings: bookingsSearch, isSearching } = useSearchBookings(query);
 
-  const { isLoading, bookings, count } = useBookings({ sort: sort as SortOptions, filter: filter as FilterOptions });
+  const { isLoading, bookings, count } = useBookings({ sort: sort as SortOptions, filter: filter as FilterBookingsOptions });
 
   if (isLoading) return <Spinner />;
 

@@ -1,7 +1,7 @@
 import Row from "../components/Row";
-import ToursOperations from "~/features/tours/ToursOperations";
 import GuestsTable from "~/features/guests/Gueststable";
 import { AddGuest } from "~/features/guests/AddGuest";
+import GuestsOperations from "~/features/guests/GuestsOperations";
 // import CreateCabinForm from "../features/cabins/CreateCabinForm";
 
 function Guests() {
@@ -10,7 +10,7 @@ function Guests() {
       <Row $type="horizontal">
         <h2>Guests</h2>
         {/* <p>Filter / Sort</p> */}
-        <ToursOperations />
+        <GuestsOperations />
       </Row>
       <Row>
         <GuestsTable />

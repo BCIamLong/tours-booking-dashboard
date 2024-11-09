@@ -20,15 +20,17 @@ export const useGuests = function ({
 }) {
   const [searchParams] = useSearchParams();
   const search = JSON.parse(searchParams.get("search") || `{}`);
+  const currentPage = +searchParams.get("page")! || 1;
 
   const queryClient = useQueryClient();
-  const options = { sort, filter, page, limit, search };
+  const options = { sort, filter, page: currentPage || page, limit, search };
   const { data, isLoading, error } = useQuery({
     // queryKey: [`tours${sort !== "none" ? `-sort-by-${sort}` : ""}`],
     queryKey: [`guests`, options],
     queryFn: () => getGuests(options),
   });
   const { guests, count } = data || {};
+  // console.log(count);
 
   const numPages = Math.ceil(count / PAGE_LIMIT);
   if (page > 1 && page <= numPages) {

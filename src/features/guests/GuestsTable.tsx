@@ -6,14 +6,15 @@ import Empty from "~/components/Empty";
 import { FilterGuestOptions, Guest, SortOptions } from "~/types";
 import { useGuests } from "./useGuests";
 import GuestsItem from "./GuestsItem";
+import Pagination from "~/components/Pagination";
 
 function GuestsTable() {
   const [searchParams] = useSearchParams();
   const sort = searchParams.get("sort") || "none";
   const filter = searchParams.get("filter") || "none";
 
-  const { guests, error, isLoading } = useGuests({ sort: sort as SortOptions, filter: filter as FilterGuestOptions });
-
+  const { guests, error, isLoading, count } = useGuests({ sort: sort as SortOptions, filter: filter as FilterGuestOptions });
+  console.log(guests, count)
 
   if (isLoading) return <Spinner />;
 
@@ -40,6 +41,9 @@ function GuestsTable() {
         {/* <Table.Body data={cabins} render={(cabin) => <CabinItem cabin={cabin} key={cabin.id} />} /> */}
 
         {/* {cabins?.map()} */}
+        <Table.Footer>
+          <Pagination count={count || 0} />
+        </Table.Footer>
       </Table>
     </Menu>
   );

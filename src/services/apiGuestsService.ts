@@ -21,14 +21,15 @@ export const getGuests = async function ({
     let filterStr = "";
     if (sort === "latest") sortStr = "sort=-createdAt";
     if (sort === "oldest") sortStr = "sort=createdAt";
-    if (sort === "price-high") sortStr = "sort=-totalPrice";
-    if (sort === "price-low") sortStr = "sort=totalPrice";
-    if (sort === "name-high") sortStr = "sort=-name";
-    if (sort === "name-low") sortStr = "sort=name";
+    // if (sort === "price-high") sortStr = "sort=-totalPrice";
+    // if (sort === "price-low") sortStr = "sort=totalPrice";
+    if (sort === "name-high") sortStr = "sort=-fullName";
+    if (sort === "name-low") sortStr = "sort=fullName";
 
-    // if (filter === "checked-in") filterStr = "&status=checked-in";
-    // if (filter === "checked-out") filterStr = "&status=checked-out";
-    // if (filter === "confirmed") filterStr = "&status=Confirmed";
+    if (filter === "verifyEmail-false") filterStr = "&verifyEmail=false";
+    if (filter === "verifyEmail-true") filterStr = "&verifyEmail=true";
+    if (filter === "enable2FA-false") filterStr = "&enable2FA=false";
+    if (filter === "enable2FA-true") filterStr = "&enable2FA=true";
 
     const searchOptions = new URLSearchParams((search as URLSearchParams) || {}).toString();
 
@@ -40,7 +41,7 @@ export const getGuests = async function ({
     // console.log(url)
     const res = await axios.get(url);
 
-    // console.log(res)
+    // console.log(res);
     return { guests: res?.data?.data?.guests, count: res?.data?.count };
   } catch (err) {
     console.log(err);

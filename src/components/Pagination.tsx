@@ -2,7 +2,9 @@ import styled from "styled-components";
 import { HiChevronRight, HiChevronLeft } from "react-icons/hi2";
 import Button from "./Button";
 import { useSearchParams } from "react-router-dom";
-import { PAGE_LIMIT } from "~/configs/constant";
+// import { PAGE_LIMIT } from "~/configs/constant";
+import { appConfig } from "~/configs";
+const { PAGE_LIMIT } = appConfig
 
 const StyledPagination = styled.div`
   display: flex;
@@ -25,11 +27,14 @@ const Buttons = styled.div`
 `;
 
 export default function Pagination({ count }: { count: number }) {
+  // console.log('-----------------', count)
   const [searchParams, setSearchParams] = useSearchParams();
 
   const currentPage = +searchParams.get("page")! || 1;
 
   const numPages = Math.ceil(count / PAGE_LIMIT);
+
+  // console.log('-----------------', numPages)
 
   function handleNextPage() {
     const next = currentPage === numPages ? currentPage : currentPage + 1;
@@ -45,7 +50,8 @@ export default function Pagination({ count }: { count: number }) {
     setSearchParams(searchParams);
   }
 
-  if (count < 11) return null;
+  if (count <= PAGE_LIMIT) return null;
+  // if (count < 11) return null;
 
   return (
     <StyledPagination>

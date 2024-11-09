@@ -28,9 +28,10 @@ export const useBookings = function ({
 }) {
   const [searchParams] = useSearchParams();
   const search = JSON.parse(searchParams.get("search") || `{}`);
+  const currentPage = +searchParams.get("page")! || 1;
 
   const queryClient = useQueryClient();
-  const options = { sort, filter, page, limit, search, status, type, date, difficulty };
+  const options = { sort, filter, page: currentPage || page, limit, search, status, type, date, difficulty };
   const { data, isLoading, error } = useQuery({
     // queryKey: [`tours${sort !== "none" ? `-sort-by-${sort}` : ""}`],
     queryKey: [`bookings`, options],
