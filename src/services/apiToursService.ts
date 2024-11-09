@@ -2,6 +2,9 @@ import axios from "axios";
 import { appConfig } from "~/configs";
 import { FilterOptions, SearchTour, SortOptions } from "~/types";
 
+// ! REMEMBER WHEN WE USE      "Content-Type": "multipart/form-data", WE NEED SOMETHING IN THE BACKEND TO TAKE THE DATA FROM THIS FORM DATA, BY DEFAULT SOME BACKEND FRAMEWORK MIGHT NOT HANDLE THIS DATA SO IF THAT'S A CASE WE NEED TO USE SOMETHING LIKE MULTER LIBRARY TO RESOLVE THIS DATA AND ATTACH IT TO REQUEST BODY, FILES, FILE....
+// ! "Content-Type": "multipart/form-data" REMEMBER THAT WHEN WE USE WE NEED TO USE SOMETHING TO RESOLVE THE FORM DATA
+
 axios.defaults.withCredentials = true;
 const { SERVER_BASE_URL, PAGE_LIMIT } = appConfig;
 

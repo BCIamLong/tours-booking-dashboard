@@ -5,3 +5,4 @@ export * from "./auth.type";
 export * from "./booking.type";
 export * from "./user.type";
 export * from "./guest.type";
+export * from "./setting.type";

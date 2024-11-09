@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Row from "../components/Row";
-import SettingForm from "../features/settings/SettingsForm";
+import SettingForm from "../features/setting/SettingsForm";
+// import SettingForm from "../features/settings/SettingsForm";
 
 const StyledSettings = styled.div`
   display: flex;
