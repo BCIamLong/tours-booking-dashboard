@@ -66,11 +66,17 @@ function MainNav() {
           </StyledNavLink>
         </li>
         <li>
+          <StyledNavLink to="/guests">
+            <HiOutlineHomeModern />
+            <span>Guests</span>
+          </StyledNavLink>
+        </li>
+        {/* <li>
           <StyledNavLink to="/cabins">
             <HiOutlineHomeModern />
             <span>Cabins</span>
           </StyledNavLink>
-        </li>
+        </li> */}
         <li>
           <StyledNavLink to="/users">
             <HiOutlineUsers />

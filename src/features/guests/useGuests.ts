@@ -1,59 +1,51 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 
-import { FilterBookingsOptions, SortOptions } from "~/types";
+import { FilterGuestOptions, SortOptions } from "~/types";
 import { appConfig } from "~/configs";
-import { getBookings } from "~/services/apiBookingService";
+import { getGuests } from "~/services/apiGuestsService";
 
 const { PAGE_LIMIT } = appConfig;
 
-export const useBookings = function ({
+export const useGuests = function ({
   sort = "none",
   filter = "none",
   page = 1,
   limit,
-  type,
-  status,
-  date,
-  difficulty,
 }: {
   sort: SortOptions;
-  filter: FilterBookingsOptions;
+  filter: FilterGuestOptions;
   page?: number;
   limit?: number;
-  type?: string;
-  status?: string;
-  date?: string;
-  difficulty?: string;
 }) {
   const [searchParams] = useSearchParams();
   const search = JSON.parse(searchParams.get("search") || `{}`);
 
   const queryClient = useQueryClient();
-  const options = { sort, filter, page, limit, search, status, type, date, difficulty };
+  const options = { sort, filter, page, limit, search };
   const { data, isLoading, error } = useQuery({
     // queryKey: [`tours${sort !== "none" ? `-sort-by-${sort}` : ""}`],
-    queryKey: [`bookings`, options],
-    queryFn: () => getBookings(options),
+    queryKey: [`guests`, options],
+    queryFn: () => getGuests(options),
   });
-  const { bookings, count } = data || {};
+  const { guests, count } = data || {};
 
   const numPages = Math.ceil(count / PAGE_LIMIT);
   if (page > 1 && page <= numPages) {
     const prefetchOptions = { ...options, page: page - 1 };
     queryClient.prefetchQuery({
-      queryKey: [`bookings`, prefetchOptions],
-      queryFn: () => getBookings(prefetchOptions),
+      queryKey: [`guests`, prefetchOptions],
+      queryFn: () => getGuests(prefetchOptions),
     });
   }
 
   if (page >= 1 && page < numPages) {
     const prefetchOptions = { ...options, page: page + 1 };
     queryClient.prefetchQuery({
-      queryKey: [`bookings`, prefetchOptions],
-      queryFn: () => getBookings(prefetchOptions),
+      queryKey: [`guests`, prefetchOptions],
+      queryFn: () => getGuests(prefetchOptions),
     });
   }
 
-  return { bookings, isLoading, count, search, error };
+  return { guests, isLoading, count, search, error };
 };

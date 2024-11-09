@@ -26,3 +26,10 @@ export interface Guest {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface SearchGuest {
+  fullName: string;
+  email: string;
+  nationality?: string;
+  countryFlag?: string;
+}
