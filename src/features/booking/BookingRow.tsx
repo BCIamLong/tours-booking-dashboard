@@ -6,11 +6,13 @@ import Menus from "~/components/Menus";
 import Table from "~/components/Table";
 import { formatDate, getDistanceDates, getTimeAfterCreatedAt } from "~/utils/dateUtils";
 import formatCurrency from "~/utils/formatCurrency";
-import { useCheckOut } from "../check-in-out/useCheckOut";
+import { useCheckOut } from "../booking/useCheckOut";
+// import { useCheckOut } from "../check-in-out/useCheckOut";
 // import { useDeleteBooking } from "./useDeleteBooking";
 import Modal from "~/components/Modal";
 import { ConfirmDelete } from "~/components/ConfirmDelete";
 import { Booking, Guest, Tour } from "~/types";
+import { useDeleteBooking } from "./useDeleteBooking";
 
 interface BookingRowProps {
   booking: Booking;
@@ -94,6 +96,7 @@ const colors = {
   "checked-out": "silver",
   "checked-in": "yellow",
   unconfirmed: "blue",
+  confirmed: "blue",
 };
 
 export default function BookingRow({ booking }: BookingRowProps) {
@@ -103,7 +106,7 @@ export default function BookingRow({ booking }: BookingRowProps) {
   const tour = cabinId as Tour
   const guest = guestId as Guest
 
-  // const { isDeleting, deleteBooking } = useDeleteBooking();
+  const { isDeleting, deleteBooking } = useDeleteBooking();
   return (
     <Table.Row>
       <div></div>
@@ -145,7 +148,13 @@ export default function BookingRow({ booking }: BookingRowProps) {
               <HiMiniEye />
               <span>See detail</span>
             </Menus.Button>
-            {status === "unconfirmed" && (
+            {/* {status === "unconfirmed" && (
+              <Menus.Button onClick={() => navigate(`/check-in/${id}`)}>
+                <HiArrowDownOnSquare />
+                <span>Check in</span>
+              </Menus.Button>
+            )} */}
+            {status === "confirmed" && (
               <Menus.Button onClick={() => navigate(`/check-in/${id}`)}>
                 <HiArrowDownOnSquare />
                 <span>Check in</span>
@@ -153,7 +162,7 @@ export default function BookingRow({ booking }: BookingRowProps) {
             )}
 
             {status === "checked-in" && (
-              <Menus.Button onClick={() => checkOut(123)} disabled={isCheckingOut}>
+              <Menus.Button onClick={() => checkOut(id)} disabled={isCheckingOut}>
                 <HiArrowUpOnSquare />
                 <span>Check out</span>
               </Menus.Button>
@@ -165,9 +174,9 @@ export default function BookingRow({ booking }: BookingRowProps) {
               </Menus.Button>
             </Modal.Open>
           </Menus.Box>
-          {/* <Modal.Window name="delete-booking">
-            <ConfirmDelete recourseName="booking" disabled={isDeleting} onConfirm={() => deleteBooking(id)} />
-          </Modal.Window> */}
+          <Modal.Window name="delete-booking">
+            <ConfirmDelete recourseName="booking" disabled={isDeleting} onConfirm={() => deleteBooking({ id })} />
+          </Modal.Window>
         </Menus.Menu>
       </Modal>
     </Table.Row>

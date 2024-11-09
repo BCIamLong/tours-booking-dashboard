@@ -5,4 +5,5 @@ export const STATUS_COLORS = {
   "checked-in": "green",
   // "checked-in": "yellow",
   unconfirmed: "blue",
+  confirmed: "blue",
 };

@@ -1,6 +1,19 @@
-import Cabin from "./cabin.type";
 import { Guest } from "./guest.type";
 import { Tour } from "./tour.type";
+
+export interface BookingInput {
+  startDate: Date;
+  endDate: Date;
+  numNights: number;
+  numGuests: number;
+  cabinPrice: number;
+  extrasPrice: number;
+  totalPrice: number;
+  status?: "checked-out" | "checked-in" | "confirmed" | "unconfirmed";
+  hasBreakfast?: boolean;
+  isPaid?: boolean;
+  observation: string;
+}
 
 export interface Booking {
   _id: string;
@@ -13,7 +26,7 @@ export interface Booking {
   cabinPrice: number;
   extrasPrice: number;
   totalPrice: number;
-  status?: "checked-out" | "checked-in" | "unconfirmed";
+  status?: "checked-out" | "checked-in" | "confirmed" | "unconfirmed";
   hasBreakfast?: boolean;
   isPaid?: boolean;
   observation: string;

@@ -1,7 +1,7 @@
 import axios from "axios";
 // import Cookies from 'js-cookie'
 import { appConfig } from "~/configs";
-import { SearchBooking, SortOptions, UserBookingsOption } from "~/types";
+import { BookingInput, SearchBooking, SortOptions, UserBookingsOption } from "~/types";
 
 axios.defaults.withCredentials = true;
 
@@ -39,6 +39,46 @@ export const getBookings = async function ({
 
     // console.log(res)
     return { bookings: res?.data?.data?.bookings, count: res?.data?.count };
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export const getBooking = async function (id: string) {
+  try {
+    const res = await axios.get(`${SERVER_BASE_URL}/api/v1/bookings/${id}`, {});
+
+    // console.log(res);
+    return res?.data?.data?.booking;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export const updateBooking = async function ({ id, data }: { id: string; data: Partial<BookingInput> }) {
+  try {
+    console.log("----------------------------");
+    const res = await axios.patch(`${SERVER_BASE_URL}/api/v1/bookings/${id}`, data, {
+      headers: {
+        // "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("--------------------------", res);
+    return res?.data?.data?.booking;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export const deleteBooking = async function ({ id }: { id: string }) {
+  try {
+    await axios.delete(`${SERVER_BASE_URL}/api/v1/bookings/${id}`);
+    // console.log(res)
+    return null;
   } catch (err) {
     console.log(err);
     throw err;
