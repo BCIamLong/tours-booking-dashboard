@@ -27,6 +27,20 @@ export interface Guest {
   updatedAt: Date;
 }
 
+export interface GuestInput {
+  fullName: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+
+export interface GuestUpdateInput {
+  fullName?: string;
+  email?: string;
+  avatar?: string | FileList;
+  role: "user" | "admin";
+}
+
 export interface SearchGuest {
   fullName: string;
   email: string;

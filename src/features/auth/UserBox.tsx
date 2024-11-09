@@ -23,7 +23,7 @@ export default function UserBox() {
   // const { avatar, fullName } = user?.user_metadata || {};
   return (
     <StyledUserBox>
-      <Avatar src={avatar || "default-user.jpg"} alt={`Avatar of ${fullName}`} />
+      <Avatar src={avatar || "default-avatar.jpg"} alt={`Avatar of ${fullName}`} />
       <span>{fullName}</span>
     </StyledUserBox>
   );

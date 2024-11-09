@@ -1,20 +1,22 @@
 // import { ReactNode } from "react";
 import styled, { css } from "styled-components";
-import { HiEllipsisVertical, HiPencil, HiMiniTrash, HiMiniSquare2Stack } from "react-icons/hi2";
+import { HiEllipsisVertical, HiPencil, HiMiniTrash } from "react-icons/hi2";
 
 // import useDeleteCabin from "../cabins/useDeleteCabin";
 // import Cabin from "~/types/cabin.type";
-import formatCurrency from "~/utils/formatCurrency";
+// import formatCurrency from "~/utils/formatCurrency";
 import Button from "~/components/Button";
 // import CabinForm from "./TourForm";
 // import useCreateCabin from "../cabins/useCreateCabin";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import Modal from "~/components/Modal";
 import { ConfirmDelete } from "~/components/ConfirmDelete";
 import Table from "~/components/Table";
 import Menus from "~/components/Menus";
-import { Guest, Location, StartDate, Tour } from "~/types";
+import { Guest } from "~/types";
 import Tag from "~/components/Tag";
+import UpdateGuestForm from "./UpdateGuestForm";
+import useDeleteGuest from "./useDeleteGuest";
 // import useDeleteTour from "./useDeleteTour";
 // import TourForm from "./TourForm";
 // import useCreateTour from "./useCreateTour";
@@ -30,11 +32,11 @@ const Name = styled.p`
   letter-spacing: 1px;
 `;
 
-const RegularPrice = styled.p`
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-`;
+// const RegularPrice = styled.p`
+//   font-size: 1.2rem;
+//   font-weight: 700;
+//   letter-spacing: 0.8px;
+// `;
 
 interface Discount {
   $isExist?: boolean;
@@ -79,7 +81,7 @@ function GuestsItem({ guest }: GuestsItemProps) {
   // const { handlers } = useToaster();
   // const { startPause, endPause } = handlers;
   // const [isConfirm, setIsConfirm] = useState(false);
-  // const { isDeleting, deleteTourMutate } = useDeleteTour();
+  const { isDeleting, deleteGuestMutate } = useDeleteGuest();
   // const { isDeleting, deleteCabinMutate } = useDeleteCabin();
   // const { isCreating, createTourMutate } = useCreateTour();
   // const { isCreating, createCabinMutate } = useCreateCabin();
@@ -87,38 +89,38 @@ function GuestsItem({ guest }: GuestsItemProps) {
   const { fullName, email, _id: guestId, verifyEmail, enable2FA, avatar } = guest;
   const avatarUrl = avatar ? avatar : '/default-user.jpg'
 
-  function handleDuplicateCabin() {
-    // const newCabinData = {
-    //   name: `Copy of ${name}`,
-    //   maxCapacity,
-    //   regularPrice,
-    //   discount,
-    //   description,
-    //   image,
-    // };
-    // createCabinMutate(newCabinData, {
-    //   onSuccess: () => {
-    //     toast.success("Duplicate cabin successful");
-    //   },
-    // });
-    // const formData = new FormData()
-    // // console.log(Object.entries(tour))
-    // Object.entries(tour).forEach(entry => {
-    //   if (entry[0] === 'ratingsAverage' || entry[0] === 'ratingsQuantity' || entry[0] === 'id' || entry[0] === '_id' || entry[0] === 'vip' || entry[0] === 'createdAt' || entry[0] === 'updatedAt') return
-    //   if (entry[0] === 'name') return formData.append(entry[0], 'Copy of ' + entry[1])
-    //   if (entry[0] === 'startLocation') return formData.append(entry[0], JSON.stringify(entry[1]))
-    //   if (entry[0] === 'startDates') return entry[1].forEach((date: StartDate) => formData.append(entry[0], JSON.stringify(date)))
-    //   if (entry[0] === 'locations') return entry[1].forEach((loc: Location) => formData.append(entry[0], JSON.stringify(loc)))
-    //   if (entry[0] === 'images') return entry[1].forEach((img: string) => formData.append(entry[0], img))
+  // function handleDuplicateCabin() {
+  // const newCabinData = {
+  //   name: `Copy of ${name}`,
+  //   maxCapacity,
+  //   regularPrice,
+  //   discount,
+  //   description,
+  //   image,
+  // };
+  // createCabinMutate(newCabinData, {
+  //   onSuccess: () => {
+  //     toast.success("Duplicate cabin successful");
+  //   },
+  // });
+  // const formData = new FormData()
+  // // console.log(Object.entries(tour))
+  // Object.entries(tour).forEach(entry => {
+  //   if (entry[0] === 'ratingsAverage' || entry[0] === 'ratingsQuantity' || entry[0] === 'id' || entry[0] === '_id' || entry[0] === 'vip' || entry[0] === 'createdAt' || entry[0] === 'updatedAt') return
+  //   if (entry[0] === 'name') return formData.append(entry[0], 'Copy of ' + entry[1])
+  //   if (entry[0] === 'startLocation') return formData.append(entry[0], JSON.stringify(entry[1]))
+  //   if (entry[0] === 'startDates') return entry[1].forEach((date: StartDate) => formData.append(entry[0], JSON.stringify(date)))
+  //   if (entry[0] === 'locations') return entry[1].forEach((loc: Location) => formData.append(entry[0], JSON.stringify(loc)))
+  //   if (entry[0] === 'images') return entry[1].forEach((img: string) => formData.append(entry[0], img))
 
-    //   formData.append(entry[0], entry[1])
-    // })
-    // createTourMutate(formData, {
-    //   onSuccess: () => {
-    //     toast.success("Duplicate tour successful");
-    //   },
-    // });
-  }
+  //   formData.append(entry[0], entry[1])
+  // })
+  // createTourMutate(formData, {
+  //   onSuccess: () => {
+  //     toast.success("Duplicate tour successful");
+  //   },
+  // });
+  // }
   return (
     <>
       <Table.Row>
@@ -167,28 +169,28 @@ function GuestsItem({ guest }: GuestsItemProps) {
                 </button> */}
               </Modal.Open>
 
-              {/* <Modal.Open opens="confirm-box">
+              <Modal.Open opens="confirm-box">
                 <Menus.Button disabled={isDeleting}>
                   <HiMiniTrash />
                   <span>Delete</span>
                 </Menus.Button>
-               
-              </Modal.Open> */}
+
+              </Modal.Open>
             </Menus.Box>
 
-            {/* <Modal.Window name="edit-form">
-              <TourForm tourToEdit={tour} />
-            </Modal.Window> */}
+            <Modal.Window name="edit-form">
+              <UpdateGuestForm guestToEdit={guest} />
+            </Modal.Window>
 
-            {/* <Modal.Window name="confirm-box">
+            <Modal.Window name="confirm-box">
               <ConfirmDelete
                 recourseName="cabin"
                 onConfirm={() => {
-                  deleteTourMutate(tourId);
+                  deleteGuestMutate(guestId);
                 }}
                 disabled={isDeleting}
               />
-            </Modal.Window> */}
+            </Modal.Window>
           </Modal>
         </Menus.Menu>
         {/* {showForm && (
