@@ -3,7 +3,6 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import ProtectedRoute from "./ProtectedRoute";
 import SpinnerScreen from "~/components/SpinnerScreen";
-import Tours from "~/pages/Tours";
 // import SpinnerScreen from "~/components/SpinnerScreen";
 
 // import Bookings from "../pages/Bookings";
@@ -27,6 +26,8 @@ const Users = lazy(() => import("../pages/Users"));
 const Cabins = lazy(() => import("../pages/Cabins"));
 const Reviews = lazy(() => import("../pages/Reviews"));
 const Guests = lazy(() => import("../pages/Guests"));
+const Tours = lazy(() => import("../pages/Tours"));
+const Posts = lazy(() => import("../pages/Posts"));
 const Settings = lazy(() => import("../pages/Settings"));
 const PageNotFound = lazy(() => import("../pages/PageNotFound"));
 const Booking = lazy(() => import("../pages/Booking"));
@@ -77,6 +78,7 @@ export default function AppRoute() {
             <Route path="guests" element={<Guests />} />
             <Route path="tours" element={<Tours />} />
             <Route path="reviews" element={<Reviews />} />
+            <Route path="posts" element={<Posts />} />
             <Route path="settings" element={<Settings />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />

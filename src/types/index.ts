@@ -7,3 +7,4 @@ export * from "./user.type";
 export * from "./guest.type";
 export * from "./setting.type";
 export * from "./review.type";
+export * from "./post.type";
