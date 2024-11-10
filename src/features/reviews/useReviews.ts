@@ -1,24 +1,20 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 
-import { FilterOptions, SortOptions } from "~/types";
+import { FilterReviewsOptions, SortOptions } from "~/types";
 import { appConfig } from "~/configs";
-import { getTours } from "~/services/apiToursService";
+import { getReviews } from "~/services/apiReviewsService";
 
 const { PAGE_LIMIT } = appConfig;
 
-export const useTours = function ({
+export const useReviews = function ({
   sort = "none",
   filter = "none",
   page = 1,
   limit,
-  type,
-  status,
-  date,
-  difficulty,
 }: {
   sort: SortOptions;
-  filter: FilterOptions;
+  filter: FilterReviewsOptions;
   page?: number;
   limit?: number;
   type?: string;
@@ -31,30 +27,30 @@ export const useTours = function ({
   const currentPage = +searchParams.get("page")! || 1;
 
   const queryClient = useQueryClient();
-  const options = { sort, filter, page: currentPage || page, limit, search, status, type, date, difficulty };
+  const options = { sort, filter, page: currentPage || page, limit, search, status };
   const { data, isLoading, error } = useQuery({
-    // queryKey: [`tours${sort !== "none" ? `-sort-by-${sort}` : ""}`],
-    queryKey: [`tours`, options],
-    queryFn: () => getTours(options),
+    // queryKey: [`reviews${sort !== "none" ? `-sort-by-${sort}` : ""}`],
+    queryKey: [`reviews`, options],
+    queryFn: () => getReviews(options),
   });
-  const { tours, count } = data || {};
+  const { reviews, count } = data || {};
 
   const numPages = Math.ceil(count / PAGE_LIMIT);
   if (page > 1 && page <= numPages) {
     const prefetchOptions = { ...options, page: page - 1 };
     queryClient.prefetchQuery({
-      queryKey: [`tours`, prefetchOptions],
-      queryFn: () => getTours(prefetchOptions),
+      queryKey: [`reviews`, prefetchOptions],
+      queryFn: () => getReviews(prefetchOptions),
     });
   }
 
   if (page >= 1 && page < numPages) {
     const prefetchOptions = { ...options, page: page + 1 };
     queryClient.prefetchQuery({
-      queryKey: [`tours`, prefetchOptions],
-      queryFn: () => getTours(prefetchOptions),
+      queryKey: [`reviews`, prefetchOptions],
+      queryFn: () => getReviews(prefetchOptions),
     });
   }
 
-  return { tours, isLoading, count, search, error };
+  return { reviews, isLoading, count, search, error };
 };

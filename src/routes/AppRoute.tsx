@@ -25,6 +25,7 @@ const Login = lazy(() => import("../pages/Login"));
 const Account = lazy(() => import("../pages/Account"));
 const Users = lazy(() => import("../pages/Users"));
 const Cabins = lazy(() => import("../pages/Cabins"));
+const Reviews = lazy(() => import("../pages/Reviews"));
 const Guests = lazy(() => import("../pages/Guests"));
 const Settings = lazy(() => import("../pages/Settings"));
 const PageNotFound = lazy(() => import("../pages/PageNotFound"));
@@ -75,6 +76,7 @@ export default function AppRoute() {
             <Route path="cabins" element={<Cabins />} />
             <Route path="guests" element={<Guests />} />
             <Route path="tours" element={<Tours />} />
+            <Route path="reviews" element={<Reviews />} />
             <Route path="settings" element={<Settings />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />

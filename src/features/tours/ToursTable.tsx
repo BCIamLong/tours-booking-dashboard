@@ -6,13 +6,14 @@ import Empty from "~/components/Empty";
 import { useTours } from "./useTours";
 import { FilterOptions, SortOptions, Tour } from "~/types";
 import TourItem from "./ToursItem";
+import Pagination from "~/components/Pagination";
 
 function ToursTable() {
   const [searchParams] = useSearchParams();
   const sort = searchParams.get("sort") || "none";
   const filter = searchParams.get("filter") || "none";
 
-  const { tours, error, isLoading } = useTours({ sort: sort as SortOptions, filter: filter as FilterOptions });
+  const { tours, error, isLoading, count } = useTours({ sort: sort as SortOptions, filter: filter as FilterOptions });
 
 
   if (isLoading) return <Spinner />;
@@ -40,6 +41,9 @@ function ToursTable() {
         {/* <Table.Body data={cabins} render={(cabin) => <CabinItem cabin={cabin} key={cabin.id} />} /> */}
 
         {/* {cabins?.map()} */}
+        <Table.Footer>
+          <Pagination count={count || 0} />
+        </Table.Footer>
       </Table>
     </Menu>
   );

@@ -6,6 +6,8 @@ export type SortOptions =
   | "price-high"
   | "name-low"
   | "name-high"
+  | "rating-high"
+  | "rating-low"
   | "popular"
   | "most-likes"
   | "trending";
@@ -14,6 +16,7 @@ export type SortReviewOption = "latest" | "oldest";
 
 export type FilterOptions = "none" | "group" | "private" | "personal";
 export type FilterBookingsOptions = "none" | "checked-in" | "checked-out" | "confirmed";
+export type FilterReviewsOptions = "none" | "1" | "2" | "3" | "4" | "5";
 export type FilterGuestOptions =
   | "none"
   | "verifyEmail-true"
