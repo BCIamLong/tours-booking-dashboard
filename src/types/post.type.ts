@@ -1,4 +1,4 @@
-import { Guest } from "./guest.type";
+import { Guest, GuestInput } from "./guest.type";
 import { Tour } from "./tour.type";
 
 export interface SearchPost {
@@ -16,11 +16,15 @@ export interface Like {
 export interface Comment {
   _id: string;
   id: string;
-  userId: string;
+  userId: string | GuestInput;
   content: string;
   likes: Like[];
   commentAt: Date;
   updateCommentAt: Date;
+}
+
+export interface CommentInput {
+  content: string;
 }
 
 export interface Bookmark {
@@ -33,6 +37,7 @@ export interface PostInput {
   title: string;
   description: string;
   images: string[];
+  comments?: Comment[];
   // commentId?: string;
 }
 

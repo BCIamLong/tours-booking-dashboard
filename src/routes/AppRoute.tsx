@@ -27,6 +27,7 @@ const Cabins = lazy(() => import("../pages/Cabins"));
 const Reviews = lazy(() => import("../pages/Reviews"));
 const Guests = lazy(() => import("../pages/Guests"));
 const Tours = lazy(() => import("../pages/Tours"));
+const Post = lazy(() => import("../pages/Post"));
 const Posts = lazy(() => import("../pages/Posts"));
 const Settings = lazy(() => import("../pages/Settings"));
 const PageNotFound = lazy(() => import("../pages/PageNotFound"));
@@ -79,6 +80,7 @@ export default function AppRoute() {
             <Route path="tours" element={<Tours />} />
             <Route path="reviews" element={<Reviews />} />
             <Route path="posts" element={<Posts />} />
+            <Route path="posts/:id" element={<Post />} />
             <Route path="settings" element={<Settings />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />

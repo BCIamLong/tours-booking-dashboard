@@ -1,6 +1,6 @@
 // import { ReactNode } from "react";
 import styled, { css } from "styled-components";
-import { HiEllipsisVertical, HiPencil, HiMiniTrash, HiMiniEye } from "react-icons/hi2";
+import { HiEllipsisVertical, HiPencil, HiMiniTrash } from "react-icons/hi2";
 
 // import useDeleteCabin from "../cabins/useDeleteCabin";
 // import Cabin from "~/types/cabin.type";
@@ -13,11 +13,11 @@ import Modal from "~/components/Modal";
 import { ConfirmDelete } from "~/components/ConfirmDelete";
 import Table from "~/components/Table";
 import Menus from "~/components/Menus";
-import { Guest, Post, Tour } from "~/types";
-import Tag from "~/components/Tag";
-import useDeletePost from "./useDeletePost";
-import PostForm from "./PostForm";
-import { useNavigate } from "react-router-dom";
+import { Guest, Comment, Tour } from "~/types";
+// import CommentForm from "./CommentForm";
+import { useNavigate, useParams } from "react-router-dom";
+import CommentForm from "./CommentForm";
+import useUpdatePost from "./useUpdatePost";
 // import useDeleteTour from "./useDeleteTour";
 // import TourForm from "./TourForm";
 // import useCreateTour from "./useCreateTour";
@@ -41,7 +41,7 @@ const Title = styled.p`
 `;
 
 const Description = styled.p`
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 500;
   color: var(--color-grey-600);
   letter-spacing: 1px;
@@ -82,8 +82,9 @@ const StyledHiEllipsisVertical = styled(HiEllipsisVertical)`
 
 // const Options = styled.button``;
 
-interface PostsItemProps {
-  post: Post;
+interface CommentsItemProps {
+  comment: Comment;
+  comments: Comment[]
 }
 
 const colors = {
@@ -92,37 +93,42 @@ const colors = {
 };
 
 
-function PostsItem({ post }: PostsItemProps) {
-  const navigate = useNavigate()
+function CommentsItem({ comment, comments }: CommentsItemProps) {
+  // const navigate = useNavigate()
   // const { handlers } = useToaster();
   // const { startPause, endPause } = handlers;
   // const [isConfirm, setIsConfirm] = useState(false);
-  const { isDeleting, deletePostMutate } = useDeletePost();
+  // const { isDeleting, deleteCommentMutate } = useDeleteComment();
   // const { isDeleting, deleteCabinMutate } = useDeleteCabin();
   // const { isCreating, createTourMutate } = useCreateTour();
   // const { isCreating, createCabinMutate } = useCreateCabin();
 
-  const { _id: postId, title, description, tourId, userId, images } = post || {};
-  const { name } = tourId as Tour || {}
-  const { fullName } = userId as Guest || {}
+  const { _id: commentId, userId, content, likes } = comment || {};
+  const { fullName, avatar } = userId as Guest || {}
+  const avatarStr = avatar ? avatar : 'default-avatar.jpg'
+  const { id } = useParams()
+  const { isUpdating, updatePostMutate } = useUpdatePost()
+
+  const handleDeleteComment = function () {
+    const newComments = comments.filter(com => com._id !== commentId)
+
+    updatePostMutate({ id: id!, newPostData: { comments: newComments } })
+  }
 
   return (
     <>
       <Table.Row>
         <div>
-          <Image src={images[0]} alt={`${fullName} post`} />
-        </div>
-        <div>
-          <Name>{name}</Name>
+          <Image src={avatarStr} />
         </div>
         <div>
           <Name>{fullName}</Name>
         </div>
         <div>
-          <Title>{title}</Title>
+          <Title>{content}</Title>
         </div>
         <div>
-          <Description>{description}</Description>
+          <Description>{likes.length}</Description>
         </div>
         <Menus.Menu>
           <Menus.Toggle id={Date.now()}>
@@ -137,10 +143,6 @@ function PostsItem({ post }: PostsItemProps) {
                 <HiMiniSquare2Stack />
                 <span>{isCreating ? "Duplicating" : "Duplicate"}</span>
               </Menus.Button> */}
-              <Menus.Button onClick={() => navigate(`/posts/${postId}`)}>
-                <HiMiniEye />
-                <span>See detail</span>
-              </Menus.Button>
 
               <Modal.Open opens="edit-form">
                 <Menus.Button>
@@ -154,7 +156,7 @@ function PostsItem({ post }: PostsItemProps) {
               </Modal.Open>
 
               <Modal.Open opens="confirm-box">
-                <Menus.Button disabled={isDeleting}>
+                <Menus.Button disabled={isUpdating}>
                   <HiMiniTrash />
                   <span>Delete</span>
                 </Menus.Button>
@@ -163,16 +165,16 @@ function PostsItem({ post }: PostsItemProps) {
             </Menus.Box>
 
             <Modal.Window name="edit-form">
-              <PostForm postToEdit={post} />
+              <CommentForm commentToEdit={comment} comments={comments} />
             </Modal.Window>
 
             <Modal.Window name="confirm-box">
               <ConfirmDelete
                 recourseName="cabin"
                 onConfirm={() => {
-                  deletePostMutate(postId);
+                  handleDeleteComment();
                 }}
-                disabled={isDeleting}
+                disabled={isUpdating}
               />
             </Modal.Window>
           </Modal>
@@ -192,4 +194,4 @@ function PostsItem({ post }: PostsItemProps) {
   );
 }
 
-export default PostsItem;
+export default CommentsItem;

@@ -1,7 +1,7 @@
 import axios from "axios";
 // import Cookies from 'js-cookie'
 import { appConfig } from "~/configs";
-import { FilterPostsOptions, SearchPost, SortOptions } from "~/types";
+import { FilterPostsOptions, PostInput, SearchPost, SortOptions } from "~/types";
 
 axios.defaults.withCredentials = true;
 
@@ -72,15 +72,25 @@ export const getPost = async function (id: string) {
   }
 };
 
-export const updatePost = async function ({ id, data }: { id: string; data: FormData }) {
+export const updatePost = async function ({ id, data }: { id: string; data: FormData | Partial<PostInput> }) {
   try {
-    console.log("----------------------------");
-    const res = await axios.patch(`${SERVER_BASE_URL}/api/v1/posts/${id}`, data, {
+    // console.log("----------------------------");
+    let query = axios.patch(`${SERVER_BASE_URL}/api/v1/posts/${id}`, data, {
       headers: {
         "Content-Type": "multipart/form-data",
         // "Content-Type": "application/json",
       },
     });
+
+    if (!(data instanceof FormData))
+      query = axios.patch(`${SERVER_BASE_URL}/api/v1/posts/${id}`, data, {
+        headers: {
+          // "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
+        },
+      });
+
+    const res = await query;
     // console.log("--------------------------", res);
     return res?.data?.data?.post;
   } catch (err) {

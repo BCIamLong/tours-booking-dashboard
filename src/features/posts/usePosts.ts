@@ -17,17 +17,13 @@ export const usePosts = function ({
   filter: FilterPostsOptions;
   page?: number;
   limit?: number;
-  type?: string;
-  status?: string;
-  date?: string;
-  difficulty?: string;
 }) {
   const [searchParams] = useSearchParams();
   const search = JSON.parse(searchParams.get("search") || `{}`);
   const currentPage = +searchParams.get("page")! || 1;
 
   const queryClient = useQueryClient();
-  const options = { sort, filter, page: currentPage || page, limit, search, status };
+  const options = { sort, filter, page: currentPage || page, limit, search };
   const { data, isLoading, error } = useQuery({
     // queryKey: [`posts${sort !== "none" ? `-sort-by-${sort}` : ""}`],
     queryKey: [`posts`, options],

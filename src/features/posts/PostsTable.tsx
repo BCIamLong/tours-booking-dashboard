@@ -14,7 +14,7 @@ function PostsTable() {
   const filter = searchParams.get("filter") || "none";
 
   const { posts, error, isLoading, count } = usePosts({ sort: sort as SortOptions, filter: filter as FilterPostsOptions });
-  console.log(posts, count)
+  // console.log(posts, count)
 
   if (isLoading) return <Spinner />;
 
