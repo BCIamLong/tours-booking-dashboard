@@ -24,6 +24,7 @@ export const useCheckIn = function () {
     //* in the onSuccess we can access to the data return from the mutation function to do something like in this case we can use it to display the specify message....
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["today_activities"] });
       toast.success(`Booking #${data._id} is checked in successful`);
       navigate("/dashboard");
     },

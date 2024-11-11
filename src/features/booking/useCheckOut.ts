@@ -24,6 +24,7 @@ export const useCheckOut = function () {
       // * if we want invalidate multiple we need to do like this so invalidate queries separate like this
       queryClient.invalidateQueries({ queryKey: ["booking"] });
       queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["today_activities"] });
     },
     onError: () => {
       toast.error("Check out not successful please check again");

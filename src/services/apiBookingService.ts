@@ -1,4 +1,5 @@
 import axios from "axios";
+import { endOfDay, startOfDay } from "date-fns";
 // import Cookies from 'js-cookie'
 import { appConfig } from "~/configs";
 import { BookingInput, FilterBookingsOptions, SearchBooking, SortOptions, UserBookingsOption } from "~/types";
@@ -165,6 +166,58 @@ export const deleteUserBooking = async function (id: string) {
     // console.log(res)
 
     return res?.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export const getBookingsAfterDate = async function (date: Date) {
+  try {
+    const startDateStr = startOfDay(date).toISOString();
+    const endDateStr = endOfDay(new Date()).toISOString();
+
+    const res = await axios.get(
+      `${SERVER_BASE_URL}/api/v1/bookings?createdAt[gte]=${startDateStr}&createdAt[lte]=${endDateStr}`
+    );
+    console.log(res);
+    return res?.data?.data?.bookings;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export const getStaysAfterDate = async function (date: Date) {
+  try {
+    const startDateStr = startOfDay(date).toISOString();
+    const endDateStr = endOfDay(new Date()).toISOString();
+
+    const res = await axios.get(
+      `${SERVER_BASE_URL}/api/v1/bookings?startDate[gte]=${startDateStr}&startDate[lte]=${endDateStr}`
+    );
+    console.log(res);
+    return res?.data?.data?.bookings;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export const getActivitiesToday = async function () {
+  try {
+    const startDateStr = new Date().toISOString();
+    const endDateStr = endOfDay(new Date()).toISOString();
+
+    const res1 = await axios.get(
+      `${SERVER_BASE_URL}/api/v1/bookings?startDate[gte]=${startDateStr}&startDate[lte]=${endDateStr}&status[eq]=confirmed`
+    );
+
+    const res2 = await axios.get(
+      `${SERVER_BASE_URL}/api/v1/bookings?endDate[gte]=${startDateStr}&endDate[lte]=${endDateStr}&status[eq]=checked-in`
+    );
+
+    return [...(res1?.data?.data?.bookings || []), ...(res2?.data?.data?.bookings || [])];
   } catch (err) {
     console.log(err);
     throw err;

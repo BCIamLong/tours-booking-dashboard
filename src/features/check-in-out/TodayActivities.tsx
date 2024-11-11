@@ -1,9 +1,11 @@
 import styled from "styled-components";
-import { useTodayActivities } from "./useTodayActivities";
+import { useTodayActivities } from "../booking/useTodayActivities";
+// import { useTodayActivities } from "./useTodayActivities";
 import Row from "~/components/Row";
 import TodayActivity from "./TodayActivity";
 import Spinner from "~/components/Spinner";
 import Empty from "~/components/Empty";
+import { Booking } from "~/types";
 
 const StyledTodayActivities = styled.div`
   grid-column: 1/3;
@@ -29,8 +31,8 @@ export default function TodayActivities() {
         <Spinner />
       ) : activities?.length ? (
         <Row>
-          {activities?.map((activity) => (
-            <TodayActivity activity={activity} key={activity.id} />
+          {activities?.map((activity: Booking) => (
+            <TodayActivity activity={activity} key={activity._id} />
           ))}
         </Row>
       ) : (

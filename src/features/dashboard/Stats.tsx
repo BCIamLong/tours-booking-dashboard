@@ -17,8 +17,9 @@ export default function Stats({
   const numBookings = bookings.length;
   const sales = bookings.reduce((sum, booking) => (booking.totalPrice ? sum + booking.totalPrice : sum), 0);
   const checkedIns = confirmedStays.length;
-  const occupation =
-    confirmedStays.reduce((sum, stay) => (stay.numNights ? sum + stay.numNights : sum), 0) / (numDays * numCabins);
+  const occupation = confirmedStays?.length ?
+    confirmedStays.reduce((sum, stay) => (stay.numNights ? sum + stay.numNights : sum), 0) / (numDays * numCabins) : 0;
+
 
   return (
     <>

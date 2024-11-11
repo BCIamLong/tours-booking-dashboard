@@ -1,13 +1,16 @@
 import Spinner from "~/components/Spinner";
-import { useRecentBookings } from "./useRecentBookings";
+// import { useRecentBookings } from "./useRecentBookings";
+import { useRecentBookings } from "../booking/useRecentBookings";
 import styled from "styled-components";
-import { useRecentStays } from "./useRecentStays";
+import { useRecentStays } from "../booking/useRecentStays";
+// import { useRecentStays } from "./useRecentStays";
 import Stats from "./Stats";
-import useCabins from "../cabins/useCabins";
+// import useCabins from "../cabins/useCabins";
 import SalesChart from "./SalesChart";
 import DurationsChart from "./DurationsChart";
 import TodayActivities from "../check-in-out/TodayActivities";
 import { Booking } from "~/types/booking.type";
+import { useTours } from "../tours/useTours";
 
 const StyledDashboardBox = styled.div`
   display: grid;
@@ -19,7 +22,7 @@ const StyledDashboardBox = styled.div`
 export default function DashboardBox() {
   const { isLoading: isLoading1, bookings } = useRecentBookings();
   const { isLoading: isLoading2, confirmedStays, numDays } = useRecentStays();
-  const { isLoading: isLoading3, cabins } = useCabins();
+  const { isLoading: isLoading3, tours } = useTours({ sort: 'none', filter: 'none' });
   console.log(isLoading1, isLoading2, isLoading3);
 
   if (isLoading1 || isLoading2 || isLoading3) return <Spinner />;
@@ -30,7 +33,7 @@ export default function DashboardBox() {
         bookings={bookings as Partial<Booking>[]}
         confirmedStays={confirmedStays as Partial<Booking>[]}
         numDays={numDays}
-        numCabins={cabins?.length || 0}
+        numCabins={tours?.length || 0}
       />
       <TodayActivities />
       <DurationsChart confirmedStays={confirmedStays as Booking[]} />
