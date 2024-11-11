@@ -1,6 +1,6 @@
 // import { ReactNode } from "react";
 import styled, { css } from "styled-components";
-import { HiEllipsisVertical, HiPencil, HiMiniTrash } from "react-icons/hi2";
+import { HiEllipsisVertical, HiPencil, HiMiniTrash, HiMiniEye } from "react-icons/hi2";
 
 // import useDeleteCabin from "../cabins/useDeleteCabin";
 // import Cabin from "~/types/cabin.type";
@@ -17,6 +17,7 @@ import { Guest } from "~/types";
 import Tag from "~/components/Tag";
 import UpdateGuestForm from "./UpdateGuestForm";
 import useDeleteGuest from "./useDeleteGuest";
+import GuestDetailForm from "./GuestDetailForm";
 // import useDeleteTour from "./useDeleteTour";
 // import TourForm from "./TourForm";
 // import useCreateTour from "./useCreateTour";
@@ -157,6 +158,12 @@ function GuestsItem({ guest }: GuestsItemProps) {
                 <HiMiniSquare2Stack />
                 <span>{isCreating ? "Duplicating" : "Duplicate"}</span>
               </Menus.Button> */}
+              <Modal.Open opens="detail-form">
+                <Menus.Button>
+                  <HiMiniEye />
+                  <span>See detail</span>
+                </Menus.Button>
+              </Modal.Open>
 
               <Modal.Open opens="edit-form">
                 <Menus.Button>
@@ -180,6 +187,9 @@ function GuestsItem({ guest }: GuestsItemProps) {
 
             <Modal.Window name="edit-form">
               <UpdateGuestForm guestToEdit={guest} />
+            </Modal.Window>
+            <Modal.Window name="detail-form">
+              <GuestDetailForm guest={guest} />
             </Modal.Window>
 
             <Modal.Window name="confirm-box">
