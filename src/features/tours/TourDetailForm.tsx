@@ -20,6 +20,7 @@ import { getDataGeolocation } from "~/services/apiGeoService";
 import { HiXMark } from "react-icons/hi2";
 import useCreateTour from "./useCreateTour";
 import useUpdateTour from "./useUpdateTour";
+import { formatTime } from "~/utils/dateUtils";
 
 const Buttons = styled.div`
   display: flex;
@@ -166,7 +167,7 @@ function TourDetailForm({ tour }: TourFormProps) {
 
 
   // const { open: setShowForm } = useModalContext()!;
-  const { _id: tourId, name, duration, difficulty, description, summary, startDates, startLocation, locations, imageCover, images, maxGroupSize, price, ratingsAverage, ratingsQuantity, type, vip } = tour || {};
+  const { _id: tourId, name, duration, difficulty, description, summary, startDates, startLocation, locations, imageCover, images, maxGroupSize, price, ratingsAverage, ratingsQuantity, type, vip, createdAt, updatedAt } = tour || {};
   const isWorking = true
 
   return (
@@ -247,18 +248,11 @@ function TourDetailForm({ tour }: TourFormProps) {
       <FormRow label="Image Cover" errorMsg={""} widthOfItem="49rem">
         <Image src={imageCover} id="imageCover" alt="" />
       </FormRow>
-      <FormRow label="image 1" errorMsg={""} widthOfItem="49rem">
-        <Image src={images[0]} id="image1" alt="" />
-      </FormRow>
-      <FormRow label="image 2" errorMsg={""} widthOfItem="49rem">
-        <Image src={images[1]} id="image2" alt="" />
-      </FormRow>
-      <FormRow label="image 3" errorMsg={""
-      } widthOfItem="49rem">
-        <Image src={images[1]} id="image3" alt="" />
-      </FormRow >
+      {images.map((img, ind) => <FormRow label={`Image ${ind + 1}`} errorMsg={""} widthOfItem="49rem">
+        <Image src={img} id={`image${ind + 1}`} alt="" />
+      </FormRow>)}
 
-      <FormRow label="start dates" widthOfItem="40rem" errorMsg={""
+      <FormRow label="start dates" widthOfItem="41.2rem" errorMsg={""
       }>
         <DateField>
           {startDates?.map((date: StartDate, ind) => <StartDateList>
@@ -277,7 +271,7 @@ function TourDetailForm({ tour }: TourFormProps) {
         </DateField>
       </FormRow >
 
-      <FormRow label="start location" widthOfItem="38.6rem" errorMsg={""}>
+      <FormRow label="start location" widthOfItem="40rem" errorMsg={""}>
         <LocationField>
           <LocationBox>
             <>
@@ -288,7 +282,7 @@ function TourDetailForm({ tour }: TourFormProps) {
         </LocationField>
       </FormRow >
 
-      <FormRow label="locations" widthOfItem="42rem" errorMsg={""
+      <FormRow label="locations" widthOfItem="44rem" errorMsg={""
       }>
         <LocationField>
           <LocationBox>
@@ -301,6 +295,22 @@ function TourDetailForm({ tour }: TourFormProps) {
           </>
         </LocationField>
       </FormRow >
+      <FormRow label="Created At" errorMsg={""}>
+        <Input
+          type="text"
+          id="createdAt"
+          value={formatTime(createdAt)}
+          disabled={isWorking}
+        />
+      </FormRow>
+      <FormRow label="Updated At" errorMsg={""}>
+        <Input
+          type="text"
+          id="updatedAt"
+          value={formatTime(updatedAt)}
+          disabled={isWorking}
+        />
+      </FormRow>
     </Form >
   );
 }

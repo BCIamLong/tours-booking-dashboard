@@ -13,6 +13,7 @@ import { usePost } from "./usePost";
 import Spinner from "~/components/Spinner";
 import Row from "~/components/Row";
 import CommentsTable from "./CommentsTable";
+import { formatTime } from "~/utils/dateUtils";
 // import useUpdatePost from "./useUpdatePost";
 // import { useModalContext } from "~/components/Modal";
 // import Cabin from "../../types/cabin.type";
@@ -64,7 +65,7 @@ function PostDetail() {
   // const { open: setShowForm } = useModalContext()!;
   const { post, isLoading } = usePost()
 
-  const { title, description, images, likes, shares, bookmarks, comments } = post as Post || {}
+  const { title, description, images, likes, shares, bookmarks, comments, createdAt, updatedAt } = post as Post || {}
 
   const isWorking = true;
 
@@ -109,6 +110,22 @@ function PostDetail() {
             type="number"
             id="bookmarks"
             value={bookmarks?.length} disabled={isWorking}
+          />
+        </FormRow>
+        <FormRow label="Created At" errorMsg={""}>
+          <Input
+            type="text"
+            id="createdAt"
+            value={formatTime(createdAt)}
+            disabled={isWorking}
+          />
+        </FormRow>
+        <FormRow label="Updated At" errorMsg={""}>
+          <Input
+            type="text"
+            id="updatedAt"
+            value={formatTime(updatedAt)}
+            disabled={isWorking}
           />
         </FormRow>
       </Form >

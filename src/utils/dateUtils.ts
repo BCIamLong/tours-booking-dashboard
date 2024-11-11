@@ -5,7 +5,7 @@ export function formatDate(date: Date) {
 }
 
 export function formatTime(time: Date) {
-  return format(time, "E, LLL dd yyyy, h:m bbb", {});
+  return format(time, "E, LLL dd yyyy, hh:mm bbb", {});
 }
 
 export function getTimeAfterCreatedAt(createdAt: Date) {

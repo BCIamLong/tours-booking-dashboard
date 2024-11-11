@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 // import Textarea from "~/components/form/Textarea";
 import { Guest, GuestInput, GuestUpdateInput } from "~/types";
 import useUpdateGuest from "./useUpdateGuest";
+import { formatTime } from "~/utils/dateUtils";
 // import useUpdateGuest from "./useUpdateGuest";
 // import { useModalContext } from "~/components/Modal";
 // import Cabin from "../../types/cabin.type";
@@ -61,7 +62,7 @@ function GuestDetailForm({ guest }: GuestFormProps) {
   // const { open: setShowForm } = useModalContext()!;
 
 
-  const { _id: guestId, fullName, avatar, email, role, verifyEmail, enable2FA } = guest || {}
+  const { _id: guestId, fullName, avatar, email, role, verifyEmail, enable2FA, createdAt, updatedAt } = guest || {}
 
   const isWorking = true;
 
@@ -110,6 +111,22 @@ function GuestDetailForm({ guest }: GuestFormProps) {
           type="text"
           id="enable2FA"
           value={enable2FA ? 'Yes' : 'No'}
+          disabled={isWorking}
+        />
+      </FormRow>
+      <FormRow label="Created At" errorMsg={""}>
+        <Input
+          type="text"
+          id="createdAt"
+          value={formatTime(createdAt)}
+          disabled={isWorking}
+        />
+      </FormRow>
+      <FormRow label="Updated At" errorMsg={""}>
+        <Input
+          type="text"
+          id="updatedAt"
+          value={formatTime(updatedAt)}
           disabled={isWorking}
         />
       </FormRow>

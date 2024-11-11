@@ -44,7 +44,7 @@ interface ReviewFormProps {
 // function ReviewForm({ review }: ReviewFormProps) {
 function ReviewDetailForm({ review }: ReviewFormProps) {
 
-  const { _id: reviewId, rating, review: reviewContent, cabin, user, createdAt } = review || {}
+  const { _id: reviewId, rating, review: reviewContent, cabin, user, createdAt, updatedAt } = review || {}
   const { name } = cabin as Tour || {}
   const { fullName } = user as Guest || {}
 
@@ -90,11 +90,19 @@ function ReviewDetailForm({ review }: ReviewFormProps) {
         />
       </FormRow>
 
-      <FormRow label="Commented At" errorMsg={""}>
+      <FormRow label="Reviewed At" errorMsg={""}>
         <Input
           type="text"
-          id="commentedAt"
+          id="reviewedAt"
           value={formatTime(createdAt)}
+          disabled={isWorking}
+        />
+      </FormRow>
+      <FormRow label="Updated At" errorMsg={""}>
+        <Input
+          type="text"
+          id="updatedAt"
+          value={formatTime(updatedAt)}
           disabled={isWorking}
         />
       </FormRow>
