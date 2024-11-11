@@ -1,6 +1,6 @@
 // import { ReactNode } from "react";
 import styled, { css } from "styled-components";
-import { HiEllipsisVertical, HiPencil, HiMiniTrash, HiMiniSquare2Stack } from "react-icons/hi2";
+import { HiEllipsisVertical, HiPencil, HiMiniTrash, HiMiniSquare2Stack, HiMiniEye } from "react-icons/hi2";
 
 import useDeleteReview from "./useDeleteReview";
 import { Guest, Review, Tour } from "~/types";
@@ -15,6 +15,7 @@ import Table from "~/components/Table";
 import Menus from "~/components/Menus";
 import Tag from "~/components/Tag";
 import ReviewForm from "./ReviewsForm";
+import ReviewDetailForm from "./ReviewDetailForm";
 
 const Image = styled.img`
   width: 70%;
@@ -120,6 +121,12 @@ function ReviewItem({ review }: ReviewItemProps) {
 
           <Modal>
             <Menus.Box id={new Date(createdAt).getTime()}>
+              <Modal.Open opens="detail-form">
+                <Menus.Button>
+                  <HiMiniEye />
+                  <span>See detail</span>
+                </Menus.Button>
+              </Modal.Open>
               <Modal.Open opens="edit-form">
                 <Menus.Button>
                   <HiPencil />
@@ -145,6 +152,9 @@ function ReviewItem({ review }: ReviewItemProps) {
 
             <Modal.Window name="edit-form">
               <ReviewForm reviewToEdit={review} />
+            </Modal.Window>
+            <Modal.Window name="detail-form">
+              <ReviewDetailForm review={review} />
             </Modal.Window>
 
             <Modal.Window name="confirm-box">
