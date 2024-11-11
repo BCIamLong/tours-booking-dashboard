@@ -1,6 +1,6 @@
 // import { ReactNode } from "react";
 import styled, { css } from "styled-components";
-import { HiEllipsisVertical, HiPencil, HiMiniTrash, HiMiniSquare2Stack } from "react-icons/hi2";
+import { HiEllipsisVertical, HiPencil, HiMiniTrash, HiMiniSquare2Stack, HiMiniEye } from "react-icons/hi2";
 
 import useDeleteCabin from "../cabins/useDeleteCabin";
 import Cabin from "~/types/cabin.type";
@@ -17,6 +17,7 @@ import { Location, StartDate, Tour } from "~/types";
 import useDeleteTour from "./useDeleteTour";
 import TourForm from "./TourForm";
 import useCreateTour from "./useCreateTour";
+import TourDetailForm from "./TourDetailForm";
 
 const Image = styled.img`
   width: 70%;
@@ -151,6 +152,12 @@ function TourItem({ tour }: TourItemProps) {
                 <HiMiniSquare2Stack />
                 <span>{isCreating ? "Duplicating" : "Duplicate"}</span>
               </Menus.Button>
+              <Modal.Open opens="detail-form">
+                <Menus.Button>
+                  <HiMiniEye />
+                  <span>See detail</span>
+                </Menus.Button>
+              </Modal.Open>
 
               <Modal.Open opens="edit-form">
                 <Menus.Button>
@@ -177,6 +184,10 @@ function TourItem({ tour }: TourItemProps) {
 
             <Modal.Window name="edit-form">
               <TourForm tourToEdit={tour} />
+            </Modal.Window>
+
+            <Modal.Window name="detail-form">
+              <TourDetailForm tour={tour} />
             </Modal.Window>
 
             <Modal.Window name="confirm-box">
