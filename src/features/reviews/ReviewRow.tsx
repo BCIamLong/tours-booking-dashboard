@@ -95,6 +95,7 @@ function ReviewItem({ review }: ReviewItemProps) {
   const { cabin, rating, review: reviewContent, user, _id: reviewId, createdAt } = review || {};
   const { name } = cabin as Tour || {}
   const { fullName } = user as Guest || {}
+  const reviewITF = new Date(createdAt).getTime() * Math.random()
 
   return (
     <>
@@ -113,14 +114,14 @@ function ReviewItem({ review }: ReviewItemProps) {
           <p><Tag $color={colors[String(rating)]}>{rating}</Tag></p>
         </div>
         <Menus.Menu>
-          <Menus.Toggle id={new Date(createdAt).getTime()}>
+          <Menus.Toggle id={reviewITF}>
             <Button $size="tiny" $variation="option">
               <StyledHiEllipsisVertical />
             </Button>
           </Menus.Toggle>
 
           <Modal>
-            <Menus.Box id={new Date(createdAt).getTime()}>
+            <Menus.Box id={reviewITF}>
               <Modal.Open opens="detail-form">
                 <Menus.Button>
                   <HiMiniEye />

@@ -82,7 +82,7 @@ function TourItem({ tour }: TourItemProps) {
     maxGroupSize,
     type,
     price,
-    imageCover, _id: tourId } = tour;
+    imageCover, _id: tourId, createdAt } = tour;
 
   function handleDuplicateCabin() {
     // const newCabinData = {
@@ -116,6 +116,9 @@ function TourItem({ tour }: TourItemProps) {
       },
     });
   }
+
+  const tourITF = new Date(createdAt).getTime() * Math.random()
+
   return (
     <>
       <Table.Row>
@@ -140,14 +143,14 @@ function TourItem({ tour }: TourItemProps) {
           )} */}
         </div>
         <Menus.Menu>
-          <Menus.Toggle id={Date.now()}>
+          <Menus.Toggle id={tourITF}>
             <Button $size="tiny" $variation="option">
               <StyledHiEllipsisVertical />
             </Button>
           </Menus.Toggle>
 
           <Modal>
-            <Menus.Box id={Date.now()}>
+            <Menus.Box id={tourITF}>
               <Menus.Button disabled={isCreating} onClick={handleDuplicateCabin}>
                 <HiMiniSquare2Stack />
                 <span>{isCreating ? "Duplicating" : "Duplicate"}</span>

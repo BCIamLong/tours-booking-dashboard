@@ -105,7 +105,7 @@ export default function BookingRow({ booking }: BookingRowProps) {
   const { _id: id, status, cabinId, guestId, createdAt } = booking || {};
   const tour = cabinId as Tour
   const guest = guestId as Guest
-
+  const bookingITF = new Date(createdAt).getTime() * Math.random()
   const { isDeleting, deleteBooking } = useDeleteBooking();
   return (
     <Table.Row>
@@ -137,13 +137,13 @@ export default function BookingRow({ booking }: BookingRowProps) {
       </div>
       <Modal>
         <Menus.Menu>
-          <Menus.Toggle id={new Date(createdAt).getTime()}>
+          <Menus.Toggle id={bookingITF}>
             <Button $size="tiny" $variation="option">
               <StyledHiEllipsisVertical />
             </Button>
           </Menus.Toggle>
 
-          <Menus.Box id={new Date(createdAt).getTime()}>
+          <Menus.Box id={bookingITF}>
             <Menus.Button onClick={() => navigate(`/bookings/${id}`)}>
               <HiMiniEye />
               <span>See detail</span>

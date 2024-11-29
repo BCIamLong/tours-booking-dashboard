@@ -102,9 +102,10 @@ function PostsItem({ post }: PostsItemProps) {
   // const { isCreating, createTourMutate } = useCreateTour();
   // const { isCreating, createCabinMutate } = useCreateCabin();
 
-  const { _id: postId, title, description, tourId, userId, images } = post || {};
+  const { _id: postId, title, description, tourId, userId, images, createdAt } = post || {};
   const { name } = tourId as Tour || {}
   const { fullName } = userId as Guest || {}
+  const postITF = new Date(createdAt).getTime() * Math.random()
 
   return (
     <>
@@ -125,14 +126,14 @@ function PostsItem({ post }: PostsItemProps) {
           <Description>{description.slice(0, 90)}...</Description>
         </div>
         <Menus.Menu>
-          <Menus.Toggle id={Date.now()}>
+          <Menus.Toggle id={postITF}>
             <Button $size="tiny" $variation="option">
               <StyledHiEllipsisVertical />
             </Button>
           </Menus.Toggle>
 
           <Modal>
-            <Menus.Box id={Date.now()}>
+            <Menus.Box id={postITF}>
               {/* <Menus.Button disabled={isCreating} onClick={handleDuplicateCabin}>
                 <HiMiniSquare2Stack />
                 <span>{isCreating ? "Duplicating" : "Duplicate"}</span>

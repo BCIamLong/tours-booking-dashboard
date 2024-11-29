@@ -87,9 +87,9 @@ function GuestsItem({ guest }: GuestsItemProps) {
   // const { isCreating, createTourMutate } = useCreateTour();
   // const { isCreating, createCabinMutate } = useCreateCabin();
 
-  const { fullName, email, _id: guestId, verifyEmail, enable2FA, avatar } = guest;
+  const { fullName, email, _id: guestId, verifyEmail, enable2FA, avatar, createdAt } = guest;
   const avatarUrl = avatar ? avatar : '/default-user.jpg'
-
+  const guestITF = new Date(createdAt).getTime() * Math.random()
   // function handleDuplicateCabin() {
   // const newCabinData = {
   //   name: `Copy of ${name}`,
@@ -146,14 +146,14 @@ function GuestsItem({ guest }: GuestsItemProps) {
           )} */}
         </div>
         <Menus.Menu>
-          <Menus.Toggle id={Date.now()}>
+          <Menus.Toggle id={guestITF}>
             <Button $size="tiny" $variation="option">
               <StyledHiEllipsisVertical />
             </Button>
           </Menus.Toggle>
 
           <Modal>
-            <Menus.Box id={Date.now()}>
+            <Menus.Box id={guestITF}>
               {/* <Menus.Button disabled={isCreating} onClick={handleDuplicateCabin}>
                 <HiMiniSquare2Stack />
                 <span>{isCreating ? "Duplicating" : "Duplicate"}</span>
