@@ -122,7 +122,7 @@ function PostsItem({ post }: PostsItemProps) {
           <Title>{title}</Title>
         </div>
         <div>
-          <Description>{description}</Description>
+          <Description>{description.slice(0, 90)}...</Description>
         </div>
         <Menus.Menu>
           <Menus.Toggle id={Date.now()}>
