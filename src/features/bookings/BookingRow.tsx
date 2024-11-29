@@ -45,7 +45,7 @@ const Price = styled.p`
   font-weight: 500;
 `;
 
-const Date = styled.p`
+const DateText = styled.p`
   font-size: 1.2rem;
   color: var(--color-grey-500);
   /* font-weight: 500; */
@@ -99,8 +99,10 @@ const colors = {
 export default function BookingRow({ booking }: BookingRowProps) {
   const navigate = useNavigate();
   const { checkOut, isCheckingOut } = useCheckOut();
-  const { id, status } = booking;
+  const { id, status, createdAt } = booking;
   const { isDeleting, deleteBooking } = useDeleteBooking();
+
+  const bookingITF = new Date(createdAt).getTime()
   return (
     <Table.Row>
       <div></div>
@@ -117,11 +119,11 @@ export default function BookingRow({ booking }: BookingRowProps) {
           <span> &rarr; </span>
           <span>{getDistanceDates(booking.startDate, booking.endDate)}</span>
         </p>
-        <Date>
+        <DateText>
           <span>{formatDate(booking.startDate)}</span>
           <span> &mdash; </span>
           <span>{formatDate(booking.endDate)}</span>
-        </Date>
+        </DateText>
       </DateBox>
       <div>
         <Status $color={colors[status]}>{status}</Status>
@@ -131,13 +133,13 @@ export default function BookingRow({ booking }: BookingRowProps) {
       </div>
       <Modal>
         <Menus.Menu>
-          <Menus.Toggle id={id}>
+          <Menus.Toggle id={bookingITF}>
             <Button $size="tiny" $variation="option">
               <StyledHiEllipsisVertical />
             </Button>
           </Menus.Toggle>
 
-          <Menus.Box id={id}>
+          <Menus.Box id={bookingITF}>
             <Menus.Button onClick={() => navigate(`/bookings/${id}`)}>
               <HiMiniEye />
               <span>See detail</span>
@@ -150,7 +152,7 @@ export default function BookingRow({ booking }: BookingRowProps) {
             )}
 
             {status === "checked-in" && (
-              <Menus.Button onClick={() => checkOut(id)} disabled={isCheckingOut}>
+              <Menus.Button onClick={() => checkOut(bookingITF)} disabled={isCheckingOut}>
                 <HiArrowUpOnSquare />
                 <span>Check out</span>
               </Menus.Button>
@@ -163,7 +165,7 @@ export default function BookingRow({ booking }: BookingRowProps) {
             </Modal.Open>
           </Menus.Box>
           <Modal.Window name="delete-booking">
-            <ConfirmDelete recourseName="booking" disabled={isDeleting} onConfirm={() => deleteBooking(id)} />
+            <ConfirmDelete recourseName="booking" disabled={isDeleting} onConfirm={() => deleteBooking(bookingITF)} />
           </Modal.Window>
         </Menus.Menu>
       </Modal>
