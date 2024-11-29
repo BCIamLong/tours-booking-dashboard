@@ -1,3 +1,4 @@
+import Cabin from "./cabin.type";
 import { Guest } from "./guest.type";
 import { Tour } from "./tour.type";
 
@@ -17,6 +18,7 @@ export interface BookingInput {
 
 export interface Booking {
   _id: string;
+  id?: string;
   cabinId: string | Tour;
   guestId: string | Guest;
   startDate: Date;
@@ -32,6 +34,8 @@ export interface Booking {
   observation: string;
   createdAt: Date;
   updatedAt: Date;
+  guests?: Guest;
+  cabins?: Cabin;
 }
 
 // export interface Booking {

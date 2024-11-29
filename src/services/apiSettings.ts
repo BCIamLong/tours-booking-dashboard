@@ -1,4 +1,4 @@
-import Setting from "~/types/setting.type";
+import { Setting } from "~/types";
 import supabase from "./supabase";
 
 export async function getSettings() {

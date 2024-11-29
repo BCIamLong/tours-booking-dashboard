@@ -1,5 +1,5 @@
 import Row from "../components/Row";
-import GuestsTable from "~/features/guests/Gueststable";
+import GuestsTable from "~/features/guests/GuestsTable";
 import { AddGuest } from "~/features/guests/AddGuest";
 import GuestsOperations from "~/features/guests/GuestsOperations";
 // import CreateCabinForm from "../features/cabins/CreateCabinForm";

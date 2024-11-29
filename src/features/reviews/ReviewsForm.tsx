@@ -44,7 +44,8 @@ interface ReviewFormProps {
 function ReviewForm({ onCloseModal: setShowForm, reviewToEdit }: ReviewFormProps) {
   // const { open: setShowForm } = useModalContext()!;
   const { _id: editId, ...editData } = reviewToEdit || {};
-  const { review, rating } = editData || {}
+
+  const { review, rating } = editData as Review || {}
   const { register, handleSubmit, formState, getValues, reset } = useForm<ReviewInput>({
     defaultValues: editId ? ({ review, rating } as FieldValues) : {},
   });
