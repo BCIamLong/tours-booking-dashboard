@@ -56,7 +56,7 @@ const getTours = async function ({
     if (status === "most-discount") statusStr = "&sort=-ratingsQuantity";
 
     console.log(search);
-    const searchOptions = new URLSearchParams((search as URLSearchParams) || {}).toString();
+    const searchOptions = new URLSearchParams((search as URLSearchParams) || {})?.toString();
     console.log(searchOptions);
 
     let url = `${SERVER_BASE_URL}/api/v1/tours?${sortStr}${filterStr}${typeStr}${difficultyStr}${statusStr}${dateStr}&limit=${limit}&page=${page}`;

@@ -105,11 +105,11 @@ interface StartData {
 }
 
 const prepareData = function (startData: StartData[], stays: Booking[]) {
-  const filterStartData = startData.map((dt) => {
+  const filterStartData = startData?.map((dt) => {
     dt.value = 0;
     return dt;
   });
-  const data = stays.reduce((dt, stay) => {
+  const data = stays?.reduce((dt, stay) => {
     if (stay.numNights === 1) dt[0].value++;
     if (stay.numNights === 2) dt[1].value++;
     if (stay.numNights === 3) dt[2].value++;
@@ -123,7 +123,7 @@ const prepareData = function (startData: StartData[], stays: Booking[]) {
   }, filterStartData);
   //   console.log(data);
 
-  const finalData = data.filter((item) => item.value !== 0);
+  const finalData = data?.filter((item) => item.value !== 0);
 
   return finalData;
 };
@@ -154,7 +154,7 @@ export default function DurationsChart({ confirmedStays }: { confirmedStays: Boo
               cy="50%"
               paddingAngle={3}
             >
-              {data.map((el, ind) => (
+              {data?.map((el, ind) => (
                 <Cell key={ind} fill={el.color} stroke={el.color} />
               ))}
             </Pie>

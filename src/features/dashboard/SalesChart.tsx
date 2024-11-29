@@ -52,17 +52,17 @@ export default function SalesChart({ bookings, numDays }: { bookings: Booking[];
   const { isDarkMode } = useDarkMode();
   const colors = isDarkMode
     ? {
-        totalSales: { stroke: "#4f46e5", fill: "#4f46e5" },
-        extrasSales: { stroke: "#22c55e", fill: "#22c55e" },
-        text: "#e5e7eb",
-        background: "#18212f",
-      }
+      totalSales: { stroke: "#4f46e5", fill: "#4f46e5" },
+      extrasSales: { stroke: "#22c55e", fill: "#22c55e" },
+      text: "#e5e7eb",
+      background: "#18212f",
+    }
     : {
-        totalSales: { stroke: "#4f46e5", fill: "#c7d2fe" },
-        extrasSales: { stroke: "#16a34a", fill: "#dcfce7" },
-        text: "#374151",
-        background: "#fff",
-      };
+      totalSales: { stroke: "#4f46e5", fill: "#c7d2fe" },
+      extrasSales: { stroke: "#16a34a", fill: "#dcfce7" },
+      text: "#374151",
+      background: "#fff",
+    };
 
   // * Way1
   const tempData = Array.from({ length: numDays }, (_, index: number) => {
@@ -74,7 +74,7 @@ export default function SalesChart({ bookings, numDays }: { bookings: Booking[];
   });
 
   const data = bookings
-    .reduce((data, booking) => {
+    ?.reduce((data, booking) => {
       data?.forEach((d) => {
         // * we can use isSameDay() of date fns to check this the same day or not
         if (d.label === new Date(booking.createdAt).toLocaleDateString("en", { month: "short", day: "2-digit" })) {

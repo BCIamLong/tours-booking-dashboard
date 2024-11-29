@@ -31,7 +31,7 @@ export const getGuests = async function ({
     if (filter === "enable2FA-false") filterStr = "&enable2FA=false";
     if (filter === "enable2FA-true") filterStr = "&enable2FA=true";
 
-    const searchOptions = new URLSearchParams((search as URLSearchParams) || {}).toString();
+    const searchOptions = new URLSearchParams((search as URLSearchParams) || {})?.toString();
 
     let url = `${SERVER_BASE_URL}/api/v1/guests?${sortStr}${filterStr}&limit=${PAGE_LIMIT}&page=${page}`;
     if (searchOptions)

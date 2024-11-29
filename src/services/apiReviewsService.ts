@@ -33,7 +33,7 @@ export const getReviews = async function ({
     if (filter === "4") filterStr = "&rating=4";
     if (filter === "5") filterStr = "&rating=5";
 
-    const searchOptions = new URLSearchParams((search as URLSearchParams) || {}).toString();
+    const searchOptions = new URLSearchParams((search as URLSearchParams) || {})?.toString();
 
     let url = `${SERVER_BASE_URL}/api/v1/reviews?${sortStr}${filterStr}&limit=${PAGE_LIMIT}&page=${page}`;
     if (searchOptions)

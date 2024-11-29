@@ -21,9 +21,11 @@ export default function UserBox() {
   const { user } = useUser();
   const { avatar, name: fullName } = user || {};
   // const { avatar, fullName } = user?.user_metadata || {};
+  console.log('----------', avatar)
+  const avatarStr = avatar?.includes('default') ? `/${avatar}` : avatar
   return (
     <StyledUserBox>
-      <Avatar src={avatar || "default-avatar.jpg"} alt={`Avatar of ${fullName}`} />
+      <Avatar src={avatarStr} alt={`Avatar of ${fullName}`} />
       <span>{fullName}</span>
     </StyledUserBox>
   );

@@ -34,7 +34,7 @@ export const getBookings = async function ({
     if (filter === "checked-out") filterStr = "&status=checked-out";
     if (filter === "confirmed") filterStr = "&status=Confirmed";
 
-    const searchOptions = new URLSearchParams((search as URLSearchParams) || {}).toString();
+    const searchOptions = new URLSearchParams((search as URLSearchParams) || {})?.toString();
 
     let url = `${SERVER_BASE_URL}/api/v1/bookings?${sortStr}${filterStr}&limit=${PAGE_LIMIT}&page=${page}`;
     if (searchOptions)

@@ -42,7 +42,7 @@ export const getPosts = async function ({
     if (filter === "trending") filterStr = `&sort=${JSON.stringify({ likes: -1, createdAt: -1 })}`;
     if (filter === "most-likes") filterStr = `&sort=${JSON.stringify({ likes: -1 })}`;
 
-    const searchOptions = new URLSearchParams((search as URLSearchParams) || {}).toString();
+    const searchOptions = new URLSearchParams((search as URLSearchParams) || {})?.toString();
 
     let url = `${SERVER_BASE_URL}/api/v1/posts?${sortStr}${filterStr}&limit=${PAGE_LIMIT}&page=${page}`;
     if (searchOptions)

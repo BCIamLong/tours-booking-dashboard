@@ -14,11 +14,11 @@ export default function Stats({
   numDays: number;
   numCabins: number;
 }) {
-  const numBookings = bookings.length;
-  const sales = bookings.reduce((sum, booking) => (booking.totalPrice ? sum + booking.totalPrice : sum), 0);
-  const checkedIns = confirmedStays.length;
+  const numBookings = bookings?.length;
+  const sales = bookings?.reduce((sum, booking) => (booking.totalPrice ? sum + booking.totalPrice : sum), 0);
+  const checkedIns = confirmedStays?.length;
   const occupation = confirmedStays?.length ?
-    confirmedStays.reduce((sum, stay) => (stay.numNights ? sum + stay.numNights : sum), 0) / (numDays * numCabins) : 0;
+    confirmedStays?.reduce((sum, stay) => (stay.numNights ? sum + stay.numNights : sum), 0) / (numDays * numCabins) : 0;
 
 
   return (
