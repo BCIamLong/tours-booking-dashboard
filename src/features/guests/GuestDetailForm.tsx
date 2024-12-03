@@ -66,6 +66,8 @@ function GuestDetailForm({ guest }: GuestFormProps) {
 
   const isWorking = true;
 
+  const avatarUrl = !avatar?.includes('https') ? `/${avatar}` : avatar
+
   return (
     <Form >
       <FormRow label="Full Name" errorMsg={""}>
@@ -96,7 +98,7 @@ function GuestDetailForm({ guest }: GuestFormProps) {
       </FormRow>
 
       <FormRow label="avatar" errorMsg={""} widthOfItem="29rem">
-        <Image src={avatar} id="avatar" alt="" />
+        <Image src={avatarUrl} id="avatar" alt="" />
       </FormRow>
       <FormRow label="Verify Email" errorMsg={""}>
         <Input

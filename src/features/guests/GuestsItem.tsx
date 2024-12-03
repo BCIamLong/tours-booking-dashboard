@@ -88,7 +88,8 @@ function GuestsItem({ guest }: GuestsItemProps) {
   // const { isCreating, createCabinMutate } = useCreateCabin();
 
   const { fullName, email, _id: guestId, verifyEmail, enable2FA, avatar, createdAt } = guest;
-  const avatarUrl = avatar ? avatar : '/default-user.jpg'
+  // const avatarUrl = avatar ? avatar : '/default-user.jpg'
+  const avatarUrl = !avatar?.includes('https') ? `/${avatar}` : avatar
   const guestITF = new Date(createdAt).getTime() * Math.random()
   // function handleDuplicateCabin() {
   // const newCabinData = {
