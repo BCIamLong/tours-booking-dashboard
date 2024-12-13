@@ -6,8 +6,8 @@ import { Form, FormRow, Input } from "~/components/form";
 import SpinnerMini from "~/components/SpinnerMini";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("admin@example.com");
-  const [password, setPassword] = useState("password123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const { login, isLogging } = useLogin();
 
