@@ -114,26 +114,26 @@ export default function BookingRow({ booking }: BookingRowProps) {
         <Cabin>{tour?.name}</Cabin>
       </div>
       <GuestText>
-        <p>{guest.fullName}</p>
-        <Email>{guest.email}</Email>
+        <p>{guest?.fullName}</p>
+        <Email>{guest?.email}</Email>
       </GuestText>
       <DateBox>
         <p>
-          <span>{getTimeAfterCreatedAt(booking.createdAt)}</span>
+          <span>{getTimeAfterCreatedAt(booking?.createdAt)}</span>
           <span> &rarr; </span>
-          <span>{getDistanceDates(booking.startDate, booking.endDate)}</span>
+          <span>{getDistanceDates(booking?.startDate, booking?.endDate)}</span>
         </p>
         <DateText>
-          <span>{formatDate(booking.startDate)}</span>
+          <span>{formatDate(booking?.startDate)}</span>
           <span> &mdash; </span>
-          <span>{formatDate(booking.endDate)}</span>
+          <span>{formatDate(booking?.endDate)}</span>
         </DateText>
       </DateBox>
       <div>
         <Status $color={colors[status!]}>{status}</Status>
       </div>
       <div>
-        <Price>{formatCurrency(booking.totalPrice)}</Price>
+        <Price>{formatCurrency(booking?.totalPrice)}</Price>
       </div>
       <Modal>
         <Menus.Menu>
