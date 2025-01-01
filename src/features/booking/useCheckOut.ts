@@ -19,7 +19,7 @@ export const useCheckOut = function () {
 
     //* in the onSuccess we can access to the data return from the mutation function to do something like in this case we can use it to display the specify message....
     onSuccess: (data) => {
-      toast.success(`Booking #${data._id} is checked out successful`);
+      toast.success(`Booking #${data?._id} is checked out successful`);
       // queryClient.invalidateQueries({ active: true });
       // * if we want invalidate multiple we need to do like this so invalidate queries separate like this
       queryClient.invalidateQueries({ queryKey: ["booking"] });

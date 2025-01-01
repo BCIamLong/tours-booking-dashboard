@@ -29,7 +29,14 @@ export const login = async function ({ email, password }: LoginInput) {
 
 export const signup = async function (data: SignupInput) {
   try {
-    const res = await axios.post(`${SERVER_BASE_URL}/api/v1/auth/signup`, data);
+    // const res = await axios.post(`${SERVER_BASE_URL}/api/v1/auth/signup`, data);
+    const { email, fullName, password, passwordConfirm } = data || {};
+    const res = await axios.post(`${SERVER_BASE_URL}/api/v1/users`, {
+      email,
+      name: fullName,
+      password,
+      passwordConfirm,
+    });
 
     // Cookies.set('access-token', res.data.token)
 

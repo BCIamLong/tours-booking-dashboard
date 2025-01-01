@@ -19,7 +19,7 @@ export default function SignUpForm() {
 
   function onSubmit({ fullName, email, password }: Inputs) {
     signup(
-      { fullName, email, password },
+      { fullName, email, password, passwordConfirm: password },
       {
         onSettled: () => reset(),
       }
